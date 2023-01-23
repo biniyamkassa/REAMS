@@ -99,8 +99,8 @@ knp_snappy:
         options:    []
 
 parameters:
-    committee.name:   "University of Gondar"
-    committee.prefix: "UoG"
+    committee.name:   "College of Medicine and Health Sciences REAMS"
+    committee.prefix: "CMHS-REAMS"
     committee.email:  "proethos2@paho.org"
     committee.address:  "525 Twenty-third Street, N.W., Washington, D.C. 20037, Estados Unidos"
     committee.phones:  "Tel.: +1 (202) 974-3000<br>Fax: +1 (202) 974-3663"

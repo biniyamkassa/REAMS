@@ -1,6 +1,6 @@
 <?php
 $message = \Swift_Message::newInstance()
-                            ->setSubject("[UoG-REAMS] Test REAMS")
+                            ->setSubject("[CMHS-REAMS] Test REAMS")
                             ->setFrom('cmhsirb@gmail.com')
                             ->setTo('redetg@gmail.com')
                             ->setBody(
