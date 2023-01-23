@@ -138,8 +138,8 @@ class MonitoringController extends Controller
                 //         "<br />$url" .
                 //         "<br />" .
                 //         "<br />" . $translator->trans("Sincerely") . "," .
-                //         "<br />" . $translator->trans("PAHOERC Secretariat") .
-                //         "<br />" . $translator->trans("PAHOERC@paho.org")
+                //         "<br />" . $translator->trans("CMHS REC Secretariat") .
+                //         "<br />" . $translator->trans("CMHS REC@paho.org")
                 //         ,
                 //         'text/html'
                 //     );
