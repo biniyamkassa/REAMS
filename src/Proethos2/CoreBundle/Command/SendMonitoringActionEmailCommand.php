@@ -111,7 +111,7 @@ class SendMonitoringActionEmailCommand extends ContainerAwareCommand
                 $body = $util->linkify($body);
 
                 $message = \Swift_Message::newInstance()
-                ->setSubject("[proethos2] " . $translator->trans("You have a pending monitoring action to %monitoring_date%", array("%monitoring_date%" => $date)))
+                ->setSubject("[CMHS-REAMS] " . $translator->trans("You have a pending monitoring action to %monitoring_date%", array("%monitoring_date%" => $date)))
                 ->setFrom($util->getConfiguration('committee.email'))
                 ->setTo($email)
                 ->setBody(

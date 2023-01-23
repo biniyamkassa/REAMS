@@ -141,7 +141,7 @@ class ProtocolController extends Controller
                         }
                     }
                     $message = \Swift_Message::newInstance()
-                    ->setSubject("[proethos2] " . $translator->trans("New comment on Proethos2"))
+                    ->setSubject("[CMHS-REAMS] " . $translator->trans("New comment on Proethos2"))
                     ->setFrom($util->getConfiguration('committee.email'))
                     ->setTo($secretaries_emails)
                     ->setBody(
@@ -273,7 +273,7 @@ class ProtocolController extends Controller
                 }
 
                 $message = \Swift_Message::newInstance()
-                ->setSubject("[proethos2] " . $translator->trans("New comment on Proethos2"))
+                ->setSubject("[CMHS-REAMS] " . $translator->trans("New comment on Proethos2"))
                 ->setFrom($util->getConfiguration('committee.email'))
                 ->setTo($secretaries_emails)
                 ->setBody(
@@ -506,7 +506,7 @@ class ProtocolController extends Controller
                 }
 
                 $message = \Swift_Message::newInstance()
-                ->setSubject("[proethos2] " . $mail_translator->trans("Your protocol was rejected"))
+                ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("Your protocol was rejected"))
                 ->setFrom($util->getConfiguration('committee.email'))
                 ->setTo($recipients)
                 ->setBody(
@@ -627,7 +627,7 @@ class ProtocolController extends Controller
                             if(in_array($role, $member->getRolesSlug())) {
 
                                 $message = \Swift_Message::newInstance()
-                                ->setSubject("[proethos2] " . $mail_translator->trans("A new protocol needs your analysis."))
+                                ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("A new protocol needs your analysis."))
                                 ->setFrom($util->getConfiguration('committee.email'))
                                 ->setTo($member->getEmail())
                                 ->setBody(
@@ -663,7 +663,7 @@ class ProtocolController extends Controller
                     }
 
                     $message = \Swift_Message::newInstance()
-                    ->setSubject("[proethos2] " . $mail_translator->trans("Your protocol was sent to review!"))
+                    ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("Your protocol was sent to review!"))
                     ->setFrom($util->getConfiguration('committee.email'))
                     ->setTo($investigators)
                     ->setBody(
@@ -722,7 +722,7 @@ class ProtocolController extends Controller
                         $body = $util->linkify($body);
 
                         $message = \Swift_Message::newInstance()
-                        ->setSubject("[proethos2] " . $mail_translator->trans("Your protocol was sent to review!"))
+                        ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("Your protocol was sent to review!"))
                         ->setFrom($util->getConfiguration('committee.email'))
                         ->setTo($investigators)
                         ->setBody(
@@ -779,7 +779,7 @@ class ProtocolController extends Controller
                     $body = $util->linkify($body);
 
                     $message = \Swift_Message::newInstance()
-                    ->setSubject("[proethos2] " . $mail_translator->trans("Your protocol was sent to review!"))
+                    ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("Your protocol was sent to review!"))
                     ->setFrom($util->getConfiguration('committee.email'))
                     ->setTo($investigators)
                     ->setBody(
@@ -909,7 +909,7 @@ class ProtocolController extends Controller
                     }
 
                     $message = \Swift_Message::newInstance()
-                    ->setSubject("[proethos2] " . $mail_translator->trans("Your protocol was sent to review!"))
+                    ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("Your protocol was sent to review!"))
                     ->setFrom($util->getConfiguration('committee.email'))
                     ->setTo($investigators)
                     ->setBody(
@@ -996,7 +996,7 @@ class ProtocolController extends Controller
                 $body = $util->linkify($body);
 
                 $message = \Swift_Message::newInstance()
-                ->setSubject("[proethos2] " . $mail_translator->trans("Your protocol was concluded as Exempt."))
+                ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("Your protocol was concluded as Exempt."))
                 ->setFrom($util->getConfiguration('committee.email'))
                 ->setTo($investigators)
                 ->setBody(
@@ -1146,7 +1146,7 @@ class ProtocolController extends Controller
                             $body = $util->linkify($body);
 
                             $message = \Swift_Message::newInstance()
-                            ->setSubject("[proethos2] " . $mail_translator->trans("You were assigned to review a protocol"))
+                            ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("You were assigned to review a protocol"))
                             ->setFrom($util->getConfiguration('committee.email'))
                             ->setTo($member->getEmail())
                             ->setBody(
@@ -1316,7 +1316,7 @@ class ProtocolController extends Controller
                     }
 
                     $message = \Swift_Message::newInstance()
-                    ->setSubject("[proethos2] " . $mail_translator->trans("A new protocol review was submitted"))
+                    ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("A new protocol review was submitted"))
                     ->setFrom($util->getConfiguration('committee.email'))
                     ->setTo($secretaries_emails)
                     ->setBody(
@@ -1542,7 +1542,7 @@ class ProtocolController extends Controller
             $body = $util->linkify($body);
 
             $message = \Swift_Message::newInstance()
-            ->setSubject("[proethos2] " . $mail_translator->trans("The protocol review was finalized!"))
+            ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("The protocol review was finalized!"))
             ->setFrom($util->getConfiguration('committee.email'))
             ->setTo($investigators)
             ->setBody(
