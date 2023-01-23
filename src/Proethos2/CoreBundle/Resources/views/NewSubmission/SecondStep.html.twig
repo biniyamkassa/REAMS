@@ -1,0 +1,587 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}{% trans %}New submission{% endtrans %}{% endblock %}
+
+{% block content %}
+    <div class="container-fluid main-content">
+        <div class="row">
+            <div class='col-md-12'>
+                <h1 class="page-header">{% trans %}New submission{% endtrans %}</h1>
+            </div>
+        </div>
+
+        {% include 'Proethos2CoreBundle:NewSubmission:meta.html.twig' %}
+
+        <div class='new-submission-tab-content'>
+            <form class='form' method='POST' id='form-second' action='{{ path("submission_new_second_step", {submission_id: submission.id}) }}'>
+
+                <input type="hidden" name="token" value="{{ csrf_token('submission-second-step') }}"/>
+                <input type='hidden' name='submission_id' value='{{ submission.id }}'>
+                <input type='hidden' id='id_stay_on_the_same_page' name='stay_on_the_same_page' value='false'>
+
+                {% if not submission.isTranslation %}
+                <div class='block'>
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <h2 class='sub-header'>{% trans %}Team{% endtrans %}</h2>
+                        </div>
+                    </div>
+
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <table class='table table-hover table-condensed' id='table-team'>
+
+                                <thead>
+                                    <tr>
+                                        <th width="40%">{% trans %}Name{% endtrans %}</th>
+                                        <th>{% trans %}E-mail{% endtrans %}</th>
+                                        <th>{% trans %}Institution{% endtrans %}</th>
+                                        <th>{% trans %}Role{% endtrans %}</th>
+                                        <th>{% trans %}Country{% endtrans %}</th>
+                                        <th>{% trans %}Main?{% endtrans %}</th>
+                                        <th>{% trans %}Actions{% endtrans %}</th>
+                                    </tr>
+                                </thead>
+
+                                <tbody>
+                                    <tr>
+                                        <td>{{ submission.owner.name }}</td>
+                                        <td><a href='{{ submission.owner.email }}'>{{ submission.owner.email }}</a></td>
+                                        <td>{{ submission.owner.institution }}</td>
+                                        <td>{{ submission.owner.submissionTeamRole(submission) }}</td>
+                                        <td>{{ submission.owner.country }}</td>
+                                        <td><label class='label label-success'>{% trans %}Yes{% endtrans %}</label></td>
+                                        <td>-</td>
+                                    </tr>
+                                    {% for team_user in submission.team %}
+                                        <tr data-id="{{ team_user.id }}">
+                                            <td>
+                                                <input type='hidden' name='team_user[]' value='{{ team_user.id }}'>
+                                                {{ team_user.name }}
+                                            </td>
+                                            <td><a href='{{ team_user.email }}'>{{ team_user.email }}</a></td>
+                                            <td>{{ team_user.institution }}</td>
+                                            <td>
+                                                <input type='hidden' name='team_role[{{ team_user.id }}]' value='{{ team_user.submissionTeamRole(submission) }}'>
+                                                {{ team_user.submissionTeamRole(submission) }}
+                                            </td>
+                                            <td>{{ team_user.country }}</td>
+                                            <td><label class='label label-default'>{% trans %}No{% endtrans %}</label></td>
+                                            <td>
+                                                <a href='#' class='btn btn-default btn-xs button-make-owner' data-toggle="tooltip" data-placement="top" title="{% trans %}Make this investigator owner of this submission{% endtrans %}">
+                                                    <i class='glyphicon glyphicon-star'></i>
+                                                </a>
+                                                <a href='#' class='btn btn-default btn-xs button-remove-team' data-toggle="tooltip" data-placement="top" title="{% trans %}Remove this investigator.{% endtrans %}">
+                                                    <i class='glyphicon glyphicon-trash'></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                    
+                                    {% for team_user in submission_team %}
+                                        {% set unique_id = '_' ~ random() %}
+                                        <tr data-id="{{ unique_id }}">
+                                            <td>
+                                                <input type='hidden' name='new_team_user[]' value='{{ unique_id }}'>
+                                                {{ team_user.name }}
+                                            </td>
+                                            <td>
+                                                <input type='hidden' name='team_email[{{ unique_id }}]' value='{{ team_user.email }}'>
+                                                <a href='{{ team_user.email }}'>{{ team_user.email }}</a></td>
+                                            <td>
+                                                <input type='hidden' name='team_institution[{{ unique_id }}]' value='{{ team_user.institution }}'>
+                                                {{ team_user.institution }}</td>
+                                            <td>
+                                                <input type='hidden' name='team_role[{{ unique_id }}]' value='{{ team_user.role }}'>
+                                                {{ team_user.role }}
+                                            </td>
+                                            <td><input type='hidden' name='team_name[{{ unique_id }}]' value='{{ team_user.name }}'></td>
+                                            <td><label class='label label-default'>{% trans %}No{% endtrans %}</label></td>
+                                            <td>
+                                                <a href='#' class='btn btn-default btn-xs button-remove-team' data-toggle="tooltip" data-placement="top" title="{% trans %}Remove this investigator.{% endtrans %}">
+                                                    <i class='glyphicon glyphicon-trash'></i>
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+
+                            <a href='#' class='btn btn-default' data-toggle="modal" data-target="#modal-new-investigator">
+                                {% trans %}Add Investigator{% endtrans %}
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <div class='block'>
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <h2 class='sub-header'>{% trans %}Abstract and Keywords{% endtrans %}</h2>
+                        </div>
+                    </div>
+                    
+                    <div id="anchor-textarea-abstract"></div>
+
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label for="textarea-abstract">{% trans %}Abstract{% endtrans %}:</label>
+                                <a href="{{ path("crud_admin_help_show", {help_id: 1} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                                <textarea class="form-control summernote" name='abstract' id='textarea-abstract'>{{ submission.abstract }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label for="input-keywords">{% trans %}Keywords{% endtrans %}:</label>
+                                <a href="{{ path("crud_admin_help_show", {help_id: 2} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                                <input type="text" class="form-control" placeholder="" id='input-keywords' name='keywords' value='{{ submission.keywords }}'>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='block'>
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <h2 class='sub-header'>{% trans %}Introduction{% endtrans %}</h2>
+                        </div>
+                    </div>
+
+                    <div id="anchor-textarea-introduction"></div>
+
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label for="textarea-introduction">{% trans %}Background{% endtrans %}:</label>
+                                <a href="{{ path("crud_admin_help_show", {help_id: 3} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                                <textarea rows="6" class="form-control summernote" name='introduction' id='textarea-introduction'>{{ submission.introduction }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="anchor-textarea-problem-statement"></div>
+
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label for="textarea-problem-statement">{% trans %}Statement of the Problem{% endtrans %}:</label>
+                                <a href="{{ path("crud_admin_help_show", {help_id: 4} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                                <textarea rows="3" class="form-control summernote" name='problem_statement' id='textarea-problem-statement'>{{ submission.problemStatement }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="anchor-literature-review"></div>
+
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="textarea-literature_review">{% trans %}Literature Review{% endtrans %}:</label>
+                                <a href="{{ path("crud_admin_help_show", {help_id: 4} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                                <textarea rows="3" class="form-control summernote" name='literature_review' id='textarea-literature-review'>{{ submission.literatureReview }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div id="anchor-textarea-justify"></div>
+
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label for="textarea-justify">{% trans %}Justification{% endtrans %}:</label>
+                                <a href="{{ path("crud_admin_help_show", {help_id: 4} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                                <textarea rows="3" class="form-control summernote" name='justify' id='textarea-justify'>{{ submission.justification }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <h2 class='sub-header'>{% trans %}Objectives{% endtrans %}</h2>
+                        </div>
+                    </div>
+
+                    <div id="anchor-textarea-goals"></div>
+
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label for="textarea-goals">{% trans %}General Objective{% endtrans %}:</label>
+                                <a href="{{ path("crud_admin_help_show", {help_id: 5} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                                <textarea rows="3" class="form-control summernote" name='goals' id='textarea-goals'>{{ submission.goals }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="anchor-textarea-specific-objective"></div>
+
+                    <div class='row'>
+                        <div class="col-md-12">
+                            <div class="form-group required">
+                                <label for="textarea-specific-objective">{% trans %}Specific Objectives{% endtrans %}:</label>
+                                <a href="{{ path("crud_admin_help_show", {help_id: 5} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                                <textarea rows="3" class="form-control summernote" name='specific_objective' id='textarea-specific-objective'> {{ submission.specificObjective }}</textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='submission-button-controls'>
+                    <button type='submit' class='btn btn-primary'>{% trans %}Save and next{% endtrans %}</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal Novo Investigador -->
+    <div class="modal fade" id="modal-new-investigator" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form class='form' id='form-team'>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel" style="display: inline;">{% trans %}Add Investigator{% endtrans %}</h4>
+                        <a href="{{ path("crud_admin_help_show", {help_id: 224} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                    </div>
+
+                    <div class="modal-body">
+                        <ul class="nav nav-tabs">
+                            <li id="modal-tab1" class="active"><a data-toggle="tab" href="#tab1">{% trans %}Select Investigator{% endtrans %}</a></li>
+                            <li id="modal-tab2"><a data-toggle="tab" href="#tab2">{% trans %}New Investigator{% endtrans %}</a></li>
+                        </ul>
+
+                        <div class="tab-content">
+                            <div id="tab1" class="tab-pane fade in active">
+                                <div class="form-group">
+                                    <label for="">{% trans %}E-mail{% endtrans %}:</label>
+                                    <select class='form-control selectpicker' data-live-search="true" name='team-email' id='select-team-email'>
+                                        <option value="">-</option>
+                                        {% for user in users %}
+                                            {% if submission.owner.email != user.email and user not in submission.team %}
+                                                <option value="{{ user.id }}||{{ user.name }}||{{ user.country }}||{{ user.institution }}">{{ user.email }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">{% trans %}Name{% endtrans %}:</label>
+                                    <input type='text' class='form-control' name='team-name' readonly="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">{% trans %}Institution{% endtrans %}:</label>
+                                    <input type='text' class='form-control' name='team-institution' readonly="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">{% trans %}Role{% endtrans %}:</label>
+                                    <input type='text' class='form-control' name='team-role' value="">
+                                </div>
+                            </div>
+
+                            <div id="tab2" class="tab-pane fade">
+                                <div class="form-group required">
+                                    <label for="">{% trans %}E-mail{% endtrans %}:</label>
+                                    <input type='text' class='form-control' id='new-team-email' name='new-team-email' value="" required>
+                                </div>
+
+                                <div class="form-group required">
+                                    <label for="">{% trans %}Name{% endtrans %}:</label>
+                                    <input type='text' class='form-control' id='new-team-name' name='new-team-name' value="" required>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">{% trans %}Institution{% endtrans %}:</label>
+                                    <input type='text' class='form-control' name='new-team-institution' value="">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="">{% trans %}Role{% endtrans %}:</label>
+                                    <input type='text' class='form-control' name='new-team-role' value="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+                        <button type="submit" id='team-submit' class="btn btn-primary disabled" data-dismiss="modal">{% trans %}Save{% endtrans %}</button>
+                    </div>
+
+                    <div class="modal-footer hide">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+                        <button type="submit" id='new-team-submit' class="btn btn-primary disabled" data-dismiss="modal">{% trans %}Save{% endtrans %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+        $(function(){
+
+            $team = {};
+
+            $("#select-team-email").change(function() {
+                user = $("#select-team-email option:selected").val();
+                email = $("#select-team-email option:selected").text();
+                if(user.length > 0) {
+
+                    user = user.split("||");
+
+                    id = parseInt(user[0]);
+                    name = user[1];
+                    country = user[2];
+                    institution = user[3];
+                    role = $("#form-team input[name='team-role']").val();
+
+                    $team[id] = {name: name, email: email, country: country, institution: institution, role: role};
+
+                    $("#form-team input[name='team-name']").val(name);
+                    $("#form-team input[name='team-institution']").val(institution);
+                    $("#team-submit").removeClass('disabled');
+                } else {
+                    $("#team-submit").addClass('disabled');
+                }
+            });
+
+            $(document).on('keypress click', '#team-submit', function(e){
+                e.preventDefault();
+
+                for(id in $team) {
+                    user = $team[id];
+
+                    string =  "<tr>"
+                    string += "<td><input type='hidden' name='team_user[]' value='"+ id +"'>"+ user['name'] +"</td>"
+                    string += "<td><a href='mailto:"+ user['email'] +"'>"+ user['email'] +"</a></td>"
+                    string += "<td>"+ user['institution'] +"</td>"
+                    string += "<td><input type='hidden' name='team_role["+ id +"]' value='"+ user['role'] +"'>"+ role +"</td>"
+                    string += "<td>"+ user['country'] +"</td>"
+                    string += "<td><label class='label label-default'>{% trans %}No{% endtrans %}</label></td>"
+                    string += "<td><a href='#' class='btn btn-default btn-xs button-remove-team'><i class='glyphicon glyphicon-trash'></i></a></td>"
+                    string += "</tr>";
+
+                    $("#table-team tbody").append(string);
+                    $team = {};
+
+                    form = $("#form-second");
+                    $("#id_stay_on_the_same_page").val('true');
+                    form.submit();
+                }
+            });
+
+            $("#new-team-email, #new-team-name").blur(function() {
+                email = $("#new-team-email").val();
+                name = $("#new-team-name").val();
+
+                if ( email && name ) {
+                    $("#new-team-submit").removeClass('disabled');
+                } else {
+                    $("#new-team-submit").addClass('disabled');
+                }
+            });
+
+            $(document).on('keypress click', '#new-team-submit', function(e){
+                e.preventDefault();
+
+                $team = {};
+
+                var unique_id = function () {
+                    // Math.random should be unique because of its seeding algorithm.
+                    // Convert it to base 36 (numbers + letters), and grab the first 9 characters after the decimal.
+                    return '_' + Math.random().toString(36).substr(2, 9);
+                };
+
+                id = unique_id();
+                email = $("#form-team input[name='new-team-email']").val();
+                name = $("#form-team input[name='new-team-name']").val();
+                institution = $("#form-team input[name='new-team-institution']").val();
+                role = $("#form-team input[name='new-team-role']").val();
+
+                $team[id] = {name: name, email: email, institution: institution, role: role};
+
+                for(id in $team) {
+                    user = $team[id];
+
+                    string =  "<tr>"
+                    string += "<td><input type='hidden' name='new_team_user[]' value='"+ id +"'>"+ user['name'] +"</td>"
+                    string += "<td><input type='hidden' name='team_email["+ id +"]' value='"+ user['email'] +"'><a href='mailto:"+ user['email'] +"'>"+ user['email'] +"</a></td>"
+                    string += "<td><input type='hidden' name='team_institution["+ id +"]' value='"+ user['institution'] +"'>"+ user['institution'] +"</td>"
+                    string += "<td><input type='hidden' name='team_role["+ id +"]' value='"+ user['role'] +"'>"+ user['role'] +"</td>"
+                    string += "<td><input type='hidden' name='team_name["+ id +"]' value='"+ user['name'] +"'></td>"
+                    string += "<td><label class='label label-default'>{% trans %}No{% endtrans %}</label></td>"
+                    string += "<td><a href='#' class='btn btn-default btn-xs button-remove-team'><i class='glyphicon glyphicon-trash'></i></a></td>"
+                    string += "</tr>";
+
+                    $("#table-team tbody").append(string);
+                    $team = {};
+
+                    form = $("#form-second");
+                    $("#id_stay_on_the_same_page").val('true');
+                    form.submit();
+                }
+            });
+
+            $(document).on('keypress click', '.button-remove-team', function(e){
+                e.preventDefault();
+
+                parent = $(this).parents('tr');
+                parent.remove();
+            });
+        });
+
+        // making investigator owner
+        $(function(){
+            $("#table-team").on("click", ".button-make-owner", function(e){
+                e.preventDefault();
+
+                parent = $(this).parents('tr');
+                id = parent.data('id');
+
+                form = $("#form-second");
+                input = "<input type='hidden' name='team-new-owner' value='"+ id +"'>";
+                form.prepend(input);
+
+                $("#id_stay_on_the_same_page").val('true');
+                form.submit();
+            });
+        });
+
+        // investigators list order by ascending
+        $(function(){
+            $('#select-team-email').on('loaded.bs.select', function (e, clickedIndex, isSelected, previousValue) {
+                var options = $(this).find("option");
+
+                options.sort(function(a,b) {
+                    if (a.text > b.text) return 1;
+                    else if (a.text < b.text) return -1;
+                    else return 0;
+                });
+
+                $(this).empty().append(options).selectpicker("refresh");
+            });
+        });
+
+        // WYSIWYG fields
+        $(function(){
+            // $('#form-second .summernote').wysihtml5(); 
+            $('#form-second .summernote').summernote({
+                height: 150,
+                dialogsInBody: true,
+                lang: '{% if 'en' == app.request.locale %}en-US{% else %}{{ app.request.locale|replace({ '_': '-' }) }}{% endif %}',
+                popover: {
+                    image: [],
+                    link: [],
+                    air: []
+                }
+            });
+        });
+
+        $(function(){
+            var redirect = $("#id_stay_on_the_same_page").val();
+            if ( redirect == 'false' ) {
+                $('#form-second').on('submit', function(e) {
+                    if ( $('#textarea-abstract').summernote('isEmpty') ) {
+                        // cancel submit
+                        e.preventDefault();
+                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                        highlight_input_field('#textarea-abstract', 'sn');
+                        return false;
+                    }
+
+                    if ( !$('#input-keywords').val() ) {
+                        // cancel submit
+                        e.preventDefault();
+                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                        highlight_input_field('#input-keywords');
+                        return false;
+                    }
+
+                    if ( $('#textarea-introduction').summernote('isEmpty') ) {
+                        // cancel submit
+                        e.preventDefault();
+                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                        highlight_input_field('#textarea-introduction', 'sn');
+                        return false;
+                    }
+
+                    if ( $('#textarea-justify').summernote('isEmpty') ) {
+                        // cancel submit
+                        e.preventDefault();
+                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                        highlight_input_field('#textarea-justify', 'sn');
+                        return false;
+                    }
+
+                    if ( $('#textarea-problem-statement').summernote('isEmpty') ) {
+                        // cancel submit
+                        e.preventDefault();
+                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                        highlight_input_field('#textarea-problem-statement', 'sn');
+                        return false;
+                    }
+
+                    if ( $('#textarea-goals').summernote('isEmpty') ) {
+                        // cancel submit
+                        e.preventDefault();
+                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                        highlight_input_field('#textarea-goals', 'sn');
+                        return false;
+                    }
+                    if ( $('#textarea-specific-objective').summernote('isEmpty') ) {
+                        // cancel submit
+                        e.preventDefault();
+                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                        highlight_input_field('#textarea-specific-objective', 'sn');
+                        return false;
+                    }
+                });
+            }
+        });
+
+        $(function(){
+            $("#modal-tab1").on("click", function(e){
+                $("#team-submit").parent().removeClass('hide');
+                $("#new-team-submit").parent().addClass('hide');
+            });
+
+            $("#modal-tab2").on("click", function(e){
+                $("#team-submit").parent().addClass('hide');
+                $("#new-team-submit").parent().removeClass('hide');
+            });
+        });
+
+        $(function(){
+            $("#new-team-username").on('blur', function() {
+                var val = $(this).val();
+                var slug = convertToSlug(val);
+                $(this).val(slug);
+            });
+        });
+
+        function convertToSlug(Text) {
+            var from = "ÁÄÂÀÃÅČÇĆĎÉĚËÈÊẼĔȆĞÍÌÎÏİŇÑÓÖÒÔÕØŘŔŠŞŤÚŮÜÙÛÝŸŽáäâàãåčçćďéěëèêẽĕȇğíìîïıňñóöòôõøðřŕšşťúůüùûýÿžþÞĐđßÆa";
+            var to   = "AAAAAACCCDEEEEEEEEGIIIIINNOOOOOORRSSTUUUUUYYZaaaaaacccdeeeeeeeegiiiiinnooooooorrsstuuuuuyyzbBDdBAa";
+
+            for (var i=0, l=from.length ; i<l ; i++) {
+                Text = Text.replace(new RegExp(from.charAt(i), 'g'), to.charAt(i));
+            }
+
+            return Text
+                .toLowerCase()
+                .replace(/ /g,'-')
+                .replace(/_/g,'-')
+                .replace(/[^\w-]+/g,'')
+                ;
+        }
+    </script>
+{% endblock %}

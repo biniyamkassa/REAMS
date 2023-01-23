@@ -1,0 +1,56 @@
+<form method="POST" id='form-new-attachment' enctype="multipart/form-data" action="{{ path("protocol_new_attachment", {'protocol_id': protocol.id }) }}">
+    
+    <input type="hidden" name="token" value="{{ csrf_token('add-attachment') }}"/>
+    <input type="hidden" name="MAX_FILE_SIZE" value="{{ 50*1024*1024 }}" />
+
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">{% trans %}New Attachment{% endtrans %}</h4>
+    </div>
+
+    <div class="modal-body">
+        <div class="form-group">
+            <label for="select-new-attachment-type">{% trans %}Type{% endtrans %}:</label>
+            <a href="{{ path("crud_admin_help_show", {help_id: 11} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+            <select class='form-control' data-live-search="true" name='new-attachment-type' id='select-new-attachment-type' required>
+                <option></option>
+                {% for type in upload_types %}
+                    {% if type.slug not in ['protocol', 'opinion'] %}
+                    <option value="{{ type.id }}">{{ type.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="input-new-attachment-file">{% trans %}File{% endtrans %}:</label> 
+            <a href="{{ path("crud_admin_help_show", {help_id: 12} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+            <input type='file' class='form-control' name='new-attachment-file' id='input-new-attachment-file' required>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}Close{% endtrans %}</button>
+        <button type="submit" class="btn btn-primary">{% trans %}Send{% endtrans %}</button>
+    </div>
+</form>
+
+{% block script %}
+    <script>
+        $(function(){
+            $("#select-new-attachment-type").selectpicker();
+
+            $("#select-new-attachment-type").on('loaded.bs.select', function() {
+                var options = $("#select-new-attachment-type option");
+
+                options.sort(function(a,b) {
+                    if (a.text > b.text) return 1;
+                    else if (a.text < b.text) return -1;
+                    else return 0;
+                });
+
+                $(this).empty().append(options).selectpicker("refresh");
+            });
+        });
+    </script>
+{% endblock %}
