@@ -100,3 +100,9 @@ REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VA
 REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (322,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Ethical Considerations');
 REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (323,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Limitations');
 
+REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (8,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Bibliography');
+REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (9,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Scientific Contact');
+REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (10,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Prior Ethical Approval');
+
+
+
