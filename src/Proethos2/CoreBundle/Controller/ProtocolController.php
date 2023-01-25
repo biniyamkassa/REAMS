@@ -1810,7 +1810,7 @@ class ProtocolController extends Controller
             $temp__arr = explode(".", $file->getUri());
             $ext = end($temp__arr);
             if ( 'pdf' == $ext )
-                $files[] = ltrim($file->getUri(), '/');
+                $files[] = getcwd()."/../".ltrim($file->getUri(), '/');
         }
 
         $upload_directory = __DIR__.'/../../../../uploads';
@@ -1823,8 +1823,9 @@ class ProtocolController extends Controller
         }
 
         //$cmd = "gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$filepath ".implode(' ', $files);
-        $cmd = "pdftk ".getcwd()."/../".implode(' ', $files)." output $filepath";
+        $cmd = "pdftk ".implode(' ', $files)." output $filepath";
         $result = shell_exec($cmd);
+
 
         $response = new BinaryFileResponse($filepath);
         // Content-Disposition: DISPOSITION_INLINE (browser) or DISPOSITION_ATTACHMENT (download)
