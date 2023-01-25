@@ -1822,8 +1822,8 @@ class ProtocolController extends Controller
             unlink($filepath);
         }
 
-        // $cmd = "gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$filepath ".implode(' ', $files);
-        $cmd = "pdftk ".implode(' ', $files)." output $filepath";
+        //$cmd = "gs -q -dNOPAUSE -dBATCH -sDEVICE=pdfwrite -sOutputFile=$filepath ".implode(' ', $files);
+        $cmd = "pdftk ".getcwd()."/../".implode(' ', $files)." output $filepath";
         $result = shell_exec($cmd);
 
         $response = new BinaryFileResponse($filepath);
