@@ -19,3 +19,9 @@ uploads/
 web/phpmyadmin/
 .env
 app/sessions/
+.idea/encodings.xml
+.idea/CMHS-REAMS.iml
+.idea/misc.xml
+.idea/modules.xml
+.idea/php.xml
+.idea/workspace.xml
