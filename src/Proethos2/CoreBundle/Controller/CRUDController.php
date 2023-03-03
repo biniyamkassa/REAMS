@@ -1280,7 +1280,7 @@ class CRUDController extends Controller
             // getting post data
             $post_data = $request->request->all();
 
-            $required_fields = array('email', 'name', 'country','phone');
+            $required_fields = array('email', 'name', 'country','phone','institution');
             if ( 'oauth2' == $auth_type ) array_shift($required_fields);
 
             // checking required fields
