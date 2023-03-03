@@ -1012,6 +1012,23 @@
                     highlight_input_field('#textarea-primary-outcome', 'sn');
                     return false;
                 }
+                
+                if ( $('#textarea-data-collection-tools').summernote('isEmpty') ) {
+                    // cancel submit
+                    e.preventDefault();
+                    alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                    highlight_input_field('#textarea-data-collection-tools', 'sn');
+                    return false;
+                }
+            
+                
+                if ( $('#textarea-data-collection-procedure').summernote('isEmpty') ) {
+                    // cancel submit
+                    e.preventDefault();
+                    alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                    highlight_input_field('#textarea-data-collection-procedure', 'sn');
+                    return false;
+                }
             });
         });
 

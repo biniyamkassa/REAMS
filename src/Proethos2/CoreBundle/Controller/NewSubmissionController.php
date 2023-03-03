@@ -730,7 +730,7 @@ class NewSubmissionController extends Controller
             }
 
             // checking required files
-            $required_fields = array('study-design','research-area-and-period', 'interventions', 'primary-outcome');
+            $required_fields = array('study-design','data-collection-tools','data-collection-procedure','research-area-and-period', 'interventions', 'primary-outcome');
             
             if(!$submission->getIsTranslation() && 'no' == $post_data['is_multiple_clinical_study']) {
                 $required_fields[] = 'gender';
