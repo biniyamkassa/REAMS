@@ -26,6 +26,15 @@
                 </div>
             </div>
         </div>
+        
+        <div class='row'>
+            <div class='col-md-12'>
+                <div class="form-group required">
+                    <label for="input-email">{% trans %}Phone{% endtrans %}:</label> 
+                    <input type='number' class='form-control' id="input-email" name="phone" value="{{ user.phone }}" required {% if auth_type == 'oauth2' %}disabled{% endif %}>
+                </div>
+            </div>
+        </div>
 
         <div class='row'>
             <div class='col-md-12'>

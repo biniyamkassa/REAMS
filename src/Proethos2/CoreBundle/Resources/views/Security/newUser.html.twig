@@ -106,6 +106,17 @@
                     </div>
                 </div>
 
+                
+                <div class='row'>
+                    <div class='col-md-12'>
+                        <div class="form-group required">
+                            <label for="input-phone">{% trans %}Phone Number{% endtrans %}:</label> 
+                            <a href="{{ path("crud_admin_help_show", {help_id: 401} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                            <input type='number' class='form-control' id="input-phone" name="phone" value="{% if content %}{{ content.phone }}{% endif %}">
+                        </div>
+                    </div>
+                </div>
+
                 <div class='row'>
                     <div class='col-md-12'>
                         <div class="form-group required">
