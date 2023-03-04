@@ -735,8 +735,6 @@ class NewSubmissionController extends Controller
             if(!$submission->getIsTranslation() && 'no' == $post_data['is_multiple_clinical_study']) {
                 $required_fields[] = 'gender';
                 $required_fields[] = 'sample-size';
-                $required_fields[] = 'minimum-age';
-                $required_fields[] = 'maximum-age';
                 $required_fields[] = 'recruitment-init-date';
                 // $required_fields[] = 'recruitment-status';
             }
