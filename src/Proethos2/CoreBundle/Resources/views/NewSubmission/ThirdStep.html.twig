@@ -964,6 +964,22 @@
                         return false;
                     }
 
+                    if ( $('#input-minimum-age').val() > 125 ||  $('#input-minimum-age').val() < 0 ) {
+                        // cancel submit
+                        e.preventDefault();
+                        alert('{% trans %}Notice: Invalid age entry. Allowed age range is 0-125.{% endtrans %}');
+                        highlight_input_field('#input-minimum-age');
+                        return false;
+                    }
+
+                    if ( $('#input-maximum-age').val() > 125 ||  $('#input-minimum-age').val() < 0 ) {
+                        // cancel submit
+                        e.preventDefault();
+                        alert('{% trans %}Notice: Invalid age entry. Allowed age range is 0-125.{% endtrans %}');
+                        highlight_input_field('#input-maximum-age');
+                        return false;
+                    }
+
                     if ( $('#textarea-sample-size-justify').summernote('isEmpty') ) {
                         // cancel submit
                         e.preventDefault();
