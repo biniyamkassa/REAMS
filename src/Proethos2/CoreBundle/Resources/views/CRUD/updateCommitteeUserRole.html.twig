@@ -30,3 +30,22 @@
         <button type="submit" class="btn btn-primary">{% trans %}Save{% endtrans %}</button>
     </div>
 </form>
+
+{% block script %}
+    <script>
+        $(function(){
+            $('#form-update-user').on('submit', function(e) {
+
+                if (document.getElementById('checkbox-member-of-committee').checked && document.getElementById('checkbox-member-ad-hoc').checked) {
+                    // cancel submit
+                    e.preventDefault();
+                    alert('{% trans %}Notice: Cannot assign both standard and ad-hoc to the same user. Please select either of the two{% endtrans %}');
+                    highlight_input_field('#textarea-new-activity-exclusion-criteria', 'sn');
+                    return false;
+                }
+            });
+            });
+
+
+    </script>
+{% endblock %}
