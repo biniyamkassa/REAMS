@@ -436,6 +436,10 @@
 
                 parent = $(this).parents('tr');
                 parent.remove();
+                
+                form = $("#form-second");
+                $("#id_stay_on_the_same_page").val('true');
+                form.submit();
             });
         });
 
@@ -487,65 +491,65 @@
         });
 
         $(function(){
-            var redirect = $("#id_stay_on_the_same_page").val();
-            if ( redirect == 'false' ) {
                 $('#form-second').on('submit', function(e) {
-                    if ( $('#textarea-abstract').summernote('isEmpty') ) {
-                        // cancel submit
-                        e.preventDefault();
-                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
-                        highlight_input_field('#textarea-abstract', 'sn');
-                        return false;
-                    }
+                     var redirect = $("#id_stay_on_the_same_page").val();
+                    if ( redirect == 'false' ) {
+                        if ( $('#textarea-abstract').summernote('isEmpty') ) {
+                            // cancel submit
+                            e.preventDefault();
+                            alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                            highlight_input_field('#textarea-abstract', 'sn');
+                            return false;
+                        }
 
-                    if ( !$('#input-keywords').val() ) {
-                        // cancel submit
-                        e.preventDefault();
-                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
-                        highlight_input_field('#input-keywords');
-                        return false;
-                    }
+                        if ( !$('#input-keywords').val() ) {
+                            // cancel submit
+                            e.preventDefault();
+                            alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                            highlight_input_field('#input-keywords');
+                            return false;
+                        }
 
-                    if ( $('#textarea-introduction').summernote('isEmpty') ) {
-                        // cancel submit
-                        e.preventDefault();
-                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
-                        highlight_input_field('#textarea-introduction', 'sn');
-                        return false;
-                    }
+                        if ( $('#textarea-introduction').summernote('isEmpty') ) {
+                            // cancel submit
+                            e.preventDefault();
+                            alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                            highlight_input_field('#textarea-introduction', 'sn');
+                            return false;
+                        }
 
-                    if ( $('#textarea-justify').summernote('isEmpty') ) {
-                        // cancel submit
-                        e.preventDefault();
-                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
-                        highlight_input_field('#textarea-justify', 'sn');
-                        return false;
-                    }
+                        if ( $('#textarea-justify').summernote('isEmpty') ) {
+                            // cancel submit
+                            e.preventDefault();
+                            alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                            highlight_input_field('#textarea-justify', 'sn');
+                            return false;
+                        }
 
-                    if ( $('#textarea-problem-statement').summernote('isEmpty') ) {
-                        // cancel submit
-                        e.preventDefault();
-                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
-                        highlight_input_field('#textarea-problem-statement', 'sn');
-                        return false;
-                    }
+                        if ( $('#textarea-problem-statement').summernote('isEmpty') ) {
+                            // cancel submit
+                            e.preventDefault();
+                            alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                            highlight_input_field('#textarea-problem-statement', 'sn');
+                            return false;
+                        }
 
-                    if ( $('#textarea-goals').summernote('isEmpty') ) {
-                        // cancel submit
-                        e.preventDefault();
-                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
-                        highlight_input_field('#textarea-goals', 'sn');
-                        return false;
-                    }
-                    if ( $('#textarea-specific-objective').summernote('isEmpty') ) {
-                        // cancel submit
-                        e.preventDefault();
-                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
-                        highlight_input_field('#textarea-specific-objective', 'sn');
-                        return false;
+                        if ( $('#textarea-goals').summernote('isEmpty') ) {
+                            // cancel submit
+                            e.preventDefault();
+                            alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                            highlight_input_field('#textarea-goals', 'sn');
+                            return false;
+                        }
+                        if ( $('#textarea-specific-objective').summernote('isEmpty') ) {
+                            // cancel submit
+                            e.preventDefault();
+                            alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                            highlight_input_field('#textarea-specific-objective', 'sn');
+                            return false;
+                        }
                     }
                 });
-            }
         });
 
         $(function(){
