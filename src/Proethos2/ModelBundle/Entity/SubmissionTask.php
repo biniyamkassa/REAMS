@@ -54,6 +54,12 @@ class SubmissionTask extends Base
     protected $description;
 
     /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     */
+    protected $responsible;
+
+    /**
      * @var Date
      *
      * @ORM\Column(type="date")
@@ -90,6 +96,19 @@ class SubmissionTask extends Base
     public function setDescription($description)
     {
         $this->description = $description;
+
+        return $this;
+    }
+    /**
+     * Set description
+     *
+     * @param string $responsible
+     *
+     * @return SubmissionTask
+     */
+    public function setResponsible($responsible)
+    {
+        $this->responsible = $responsible;
 
         return $this;
     }

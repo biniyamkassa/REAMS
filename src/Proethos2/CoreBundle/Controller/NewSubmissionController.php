@@ -1045,6 +1045,7 @@ class NewSubmissionController extends Controller
                     $submission_task = $submission_task_repository->findOneBy(array(
                         'submission' => $submission,
                         'description' => $task['description'],
+                        'responsible' => $task['responsible'],
                         'init' => new \DateTime($task['init']),
                         'end' => new \DateTime($task['end']),
                     ));
@@ -1054,6 +1055,7 @@ class NewSubmissionController extends Controller
                         $submission_task = new SubmissionTask();
                         $submission_task->setSubmission($submission);
                         $submission_task->setDescription($task['description']);
+                        $submission_task->setResponsible($task['responsible']);
                         $submission_task->setInit(new \DateTime($task['init']));
                         $submission_task->setEnd(new \DateTime($task['end']));
                     }

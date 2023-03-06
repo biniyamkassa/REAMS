@@ -99,7 +99,8 @@ REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VA
 REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (321,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Interventions');
 REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (322,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Ethical Considerations');
 REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (323,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Limitations');
-REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (401,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Please enter you phone nubmer');
+REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (401,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Please enter you phone number');
+REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (402,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Responsible body for the task');
 
 
 

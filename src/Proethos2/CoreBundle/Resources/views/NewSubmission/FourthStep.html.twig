@@ -181,10 +181,12 @@
                                     {% for task in submission.schedule %}
                                         <tr>
                                             <input type='hidden' name='schedule[{{ loop.index0 }}][description]' value='{{ task.description }}'>
+                                            <input type='hidden' name='schedule[{{ loop.index0 }}][responsible]' value='{{ task.responsible }}'>
                                             <input type='hidden' name='schedule[{{ loop.index0 }}][init]' value='{{ task.init|date("Y-m-d") }}'>
                                             <input type='hidden' name='schedule[{{ loop.index0 }}][end]' value='{{ task.end|date("Y-m-d") }}'>
 
                                             <td>{{ task.description }}</td>
+                                            <td>{{ task.responsible }}</td>
                                             <td>{{ task.init|date("d/m/Y") }}</td>
                                             <td>{{ task.end|date("d/m/Y") }}</td>
                                             <td><a href='#' class='btn btn-default btn-xs'><i class='glyphicon glyphicon-trash'></i></a></td>
@@ -251,12 +253,17 @@
                         <h4 class="modal-title" id="myModalLabel">{% trans %}New task{% endtrans %}</h4>
                     </div>
                     <div class="modal-body">
+
                         <div class="form-group">
                             <label for="input-task-description">{% trans %}Description{% endtrans %}:</label>
                             <a href="{{ path("crud_admin_help_show", {help_id: 42} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
                             <input type='text' class='form-control' id='input-task-description' name='task-description' required>
                         </div>
-
+                        <div class="form-group">
+                            <label for="input-task-description">{% trans %}Responsible Body{% endtrans %}:</label>
+                            <a href="{{ path("crud_admin_help_show", {help_id: 402} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                            <input type='text' class='form-control' id='input-task-responsible' name='task-responsible' required>
+                        </div>
                         <div class="form-group">
                             <label for="input-task-init">{% trans %}Start{% endtrans %}:</label>
                             <a href="{{ path("crud_admin_help_show", {help_id: 43} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
