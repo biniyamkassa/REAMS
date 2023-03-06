@@ -112,7 +112,7 @@ class CreateSuperUserCommand extends ContainerAwareCommand
             $user->setUsername($username);
             $user->setEmail($email);
             $user->setInstitution(NULL);
-            $user->setPhone(NULL);
+            $user->setPhone('0900000000');
             $user->setFirstAccess(false);
             $user->setIsActive(true);
 
