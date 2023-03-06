@@ -26,6 +26,15 @@
                 </div>
             </div>
         </div>
+        
+        <div class='row'>
+            <div class='col-md-12'>
+                <div class="form-group required">
+                    <label for="input-email">{% trans %}Phone{% endtrans %}:</label> 
+                    <input type='number' class='form-control' id="input-email" name="phone" value="{{ user.phone }}" required {% if auth_type == 'oauth2' %}disabled{% endif %}>
+                </div>
+            </div>
+        </div>
 
         <div class='row'>
             <div class='col-md-12'>
@@ -44,7 +53,7 @@
 
         <div class='row'>
             <div class='col-md-12'>
-                <div class="form-group">
+                <div class="form-group required">
                     <label for="input-institution">{% trans %}Institution{% endtrans %}:</label> 
                     <a href="{{ path("crud_admin_help_show", {help_id: 51} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
                     <input type='text' class='form-control' id="input-institution" name="institution" value="{{ user.institution }}">

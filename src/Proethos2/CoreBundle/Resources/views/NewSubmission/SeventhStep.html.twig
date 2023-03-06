@@ -87,10 +87,34 @@
                     {#{% if submission.isTranslation %}#}
                         {#<a href='{{ path("submission_new_seventh_step", {submission_id: submission.originalSubmission.id}) }}' class='btn btn-default'>{% trans %}Back to original to save and finish{% endtrans %}</a>#}
                     {#{% else %}#}
-                        <button type='submit' class='btn btn-primary {% if not final_status %}disabled{% endif %}'>{% trans %}Save and finish{% endtrans %}</button>
+                        <a href='#' data-toggle="modal" data-target="#modal-confirm-submit" class='btn btn-primary {% if not final_status %}disabled{% endif %}'>{% trans %}Save and Submit{% endtrans %}</a>
                     {#{% endif %}#}
                 </div>
             </form>
+        </div>
+    </div>
+
+     <!-- Modal Confirm -->
+    <div class="modal fade" id="modal-confirm-submit" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form class='form' id='form-team'>
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" id="myModalLabel" style="display: inline;">{% trans %}Confrim you actions{% endtrans %}</h4>
+                        <a href="{{ path("crud_admin_help_show", {help_id: 224} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
+                    </div>
+
+                    <div class="modal-body">
+                        Are you sure you want to submit? 
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">{% trans %}No, Close{% endtrans %}</button>
+                        <button type="submit" id='action-submit' class="btn btn-primary" data-dismiss="modal">{% trans %}Yes, Save amd submit{% endtrans %}</button>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
 
@@ -99,7 +123,9 @@
 {% block script %}
     <script>
         $(function(){
-
+                   $("#action-submit").on('click', function(e){
+                        $("#form-seventh").submit();
+                    });
         });
     </script>
 {% endblock %}

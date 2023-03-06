@@ -75,6 +75,12 @@ class User extends Base implements UserInterface, \Serializable
      * @Assert\NotBlank()
      */
     private $name;
+    
+    /**
+     * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
+     */
+    private $phone;
 
     /** 
      * @var Country
@@ -125,6 +131,11 @@ class User extends Base implements UserInterface, \Serializable
     public function getUsername()
     {
         return Security::decrypt($this->username);
+    }
+
+    public function getPhone()
+    {
+        return $this->phone;
     }
 
     public function getSalt()
@@ -230,6 +241,20 @@ class User extends Base implements UserInterface, \Serializable
     public function setUsername($username)
     {
         $this->username = Security::encrypt($username);
+
+        return $this;
+    }
+
+        /**
+     * Set phone
+     *
+     * @param string $phone
+     *
+     * @return User
+     */
+    public function setPhone($phone)
+    {
+        $this->phone = $phone;
 
         return $this;
     }

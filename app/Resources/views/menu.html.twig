@@ -20,7 +20,7 @@
                 {% if render(controller('Proethos2CoreBundle:Index:getLogo')) %}
                 <li><a href="/"><img src='{{ render(controller('Proethos2CoreBundle:Index:getLogo')) }}' class='logo'></a></li>
                 {% endif %}
-
+                <li><a href="/">Home</a></li>
                 {% if is_granted("ROLE_USER") and 'investigator' in app.user.rolesSlug %}
                     <li>
                         <p class="navbar-btn">

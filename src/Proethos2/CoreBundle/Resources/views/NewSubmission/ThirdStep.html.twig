@@ -226,7 +226,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <div class="form-group required">
+                                <div class="form-group">
                                     <label for="input-minimum-age">{% trans %}Minimum Age{% endtrans %}:</label>
                                     <a href="{{ path("crud_admin_help_show", {help_id: 21} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
                                     <input type="number" class="form-control" placeholder="" min="0" value="{{ submission.minimumAge }}" name='minimum-age' id='input-minimum-age' {% if not submission.isMultipleClinicalStudy %}required{% endif %}>
@@ -234,7 +234,7 @@
                             </div>
 
                             <div class="col-md-3">
-                                <div class="form-group required">
+                                <div class="form-group">
                                     <label for="input-maximum-age">{% trans %}Maximum Age{% endtrans %}:</label>
                                     <a href="{{ path("crud_admin_help_show", {help_id: 22} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
                                     <input type="number" class="form-control" placeholder="" min="0" value="{{ submission.maximumAge }}" name='maximum-age' id='input-maximum-age' {% if not submission.isMultipleClinicalStudy %}required{% endif %}>
@@ -964,18 +964,18 @@
                         return false;
                     }
 
-                    if ( $('#input-minimum-age').val() == 0 ) {
+                    if ( $('#input-minimum-age').val() > 125 ||  $('#input-minimum-age').val() < 0 ) {
                         // cancel submit
                         e.preventDefault();
-                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                        alert('{% trans %}Notice: Invalid age entry. Allowed age range is 0-125.{% endtrans %}');
                         highlight_input_field('#input-minimum-age');
                         return false;
                     }
 
-                    if ( $('#input-maximum-age').val() == 0 ) {
+                    if ( $('#input-maximum-age').val() > 125 ||  $('#input-minimum-age').val() < 0 ) {
                         // cancel submit
                         e.preventDefault();
-                        alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                        alert('{% trans %}Notice: Invalid age entry. Allowed age range is 0-125.{% endtrans %}');
                         highlight_input_field('#input-maximum-age');
                         return false;
                     }
@@ -1010,6 +1010,23 @@
                     e.preventDefault();
                     alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
                     highlight_input_field('#textarea-primary-outcome', 'sn');
+                    return false;
+                }
+                
+                if ( $('#textarea-data-collection-tools').summernote('isEmpty') ) {
+                    // cancel submit
+                    e.preventDefault();
+                    alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                    highlight_input_field('#textarea-data-collection-tools', 'sn');
+                    return false;
+                }
+            
+                
+                if ( $('#textarea-data-collection-procedure').summernote('isEmpty') ) {
+                    // cancel submit
+                    e.preventDefault();
+                    alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                    highlight_input_field('#textarea-data-collection-procedure', 'sn');
                     return false;
                 }
             });
