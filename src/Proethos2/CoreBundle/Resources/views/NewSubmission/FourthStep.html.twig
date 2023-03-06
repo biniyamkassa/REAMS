@@ -190,7 +190,7 @@
                                             <td>{{ task.responsible }}</td>
                                             <td>{{ task.init|date("d/m/Y") }}</td>
                                             <td>{{ task.end|date("d/m/Y") }}</td>
-                                            <td><a href='#' class='btn btn-default btn-xs'><i class='glyphicon glyphicon-trash'></i></a></td>
+                                            <td><a href='#' class='btn btn-default btn-xs button-remove-task'><i class='glyphicon glyphicon-trash'></i></a></td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
@@ -498,7 +498,6 @@
         function recalculate_total_costs() {
             var $total_cost = 0.0;
             $.each($("#tbody-budget tr.cost"), function(index, tr){
-                console.log(tr);
                 var current_cost = parseFloat($(tr).find('.total-cost').text());
                 if (current_cost) {
                     $total_cost = $total_cost + current_cost;
