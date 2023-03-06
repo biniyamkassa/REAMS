@@ -371,7 +371,7 @@
 
                     <div class='row'>
                         <div class="col-md-12">
-                            <div class="form-group required">
+                            <div class="form-group">
                                 <label for="textarea-interventions">{% trans %}Interventions{% endtrans %}:</label>
                                 <a href="{{ path("crud_admin_help_show", {help_id: 321} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
                                 <textarea rows="4" class="form-control summernote" id='textarea-interventions' name='interventions'>{{ submission.interventions }}</textarea>
@@ -514,7 +514,7 @@
 
                     <div class='row'>
                         <div class="col-md-12">
-                            <div class="form-group required">
+                            <div class="form-group">
                                 <label for="textarea-limitations">{% trans %}Limitations{% endtrans %}:</label>
                                 <a href="{{ path("crud_admin_help_show", {help_id: 323} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
                                 <textarea rows="4" class="form-control" id='textarea-limitations' name='limitations'>{{ submission.limitations }}</textarea>
@@ -928,14 +928,6 @@
                     e.preventDefault();
                     alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
                     highlight_input_field('#textarea-sampling-procedures', 'sn');
-                    return false;
-                }
-
-                if ( $('#textarea-interventions').summernote('isEmpty') ) {
-                    // cancel submit
-                    e.preventDefault();
-                    alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
-                    highlight_input_field('#textarea-interventions', 'sn');
                     return false;
                 }
 
