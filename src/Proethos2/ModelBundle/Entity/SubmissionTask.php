@@ -122,6 +122,15 @@ class SubmissionTask extends Base
     {
         return $this->description;
     }
+    /**
+     * Get description
+     *
+     * @return string
+     */
+    public function getResponsible()
+    {
+        return $this->responsible;
+    }
 
     /**
      * Set init
