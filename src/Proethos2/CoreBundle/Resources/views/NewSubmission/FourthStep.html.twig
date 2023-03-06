@@ -413,15 +413,17 @@
                 e.preventDefault();
 
                 var $description = $("#input-task-description").val();
+                var $responsible = $("#input-task-responsible").val();
                 var $init = $("#input-task-init").val();
                 var $end = $("#input-task-end").val();
 
-                if(!$description || !$init || !$end) {
+                if(!$description|| $responsible || !$init || !$end) {
                     return
                 }
 
                 string =  "<tr>"
                 string +=    "<input type='hidden' name='schedule["+ $total_task +"][description]' value='"+ $description +"'>"
+                string +=    "<input type='hidden' name='schedule["+ $total_task +"][responsible]' value='"+ $responsible +"'>"
                 string +=    "<input type='hidden' name='schedule["+ $total_task +"][init]' value='"+ $init +"'>"
                 string +=    "<input type='hidden' name='schedule["+ $total_task +"][end]' value='"+ $end +"'>"
 
