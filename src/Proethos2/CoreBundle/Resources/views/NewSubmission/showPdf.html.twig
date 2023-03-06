@@ -297,12 +297,14 @@
                 <tr>
                     <th>{% trans %}Activity{% endtrans %}</th>
                     <th>{% trans %}Start{% endtrans %}</th>
+                    <th>{% trans %}Responsible Body{% endtrans %}</th>
                     <th>{% trans %}End{% endtrans %}</th>
                 </tr>
 
                 {% for item in submission.schedule %}
                     <tr>
                         <td>{{ item.description }}</td>
+                        <td>{{ item.responsible }}</td>
                         <td>{{ item.init|date("d/m/Y") }}</td>
                         <td>{{ item.end|date("d/m/Y") }}</td>
                     </tr>

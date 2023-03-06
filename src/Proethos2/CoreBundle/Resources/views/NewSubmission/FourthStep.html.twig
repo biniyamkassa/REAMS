@@ -417,7 +417,7 @@
                 var $init = $("#input-task-init").val();
                 var $end = $("#input-task-end").val();
 
-                if(!$description|| $responsible || !$init || !$end) {
+                if(!$description|| !$responsible || !$init || !$end) {
                     return
                 }
 
@@ -428,6 +428,7 @@
                 string +=    "<input type='hidden' name='schedule["+ $total_task +"][end]' value='"+ $end +"'>"
 
                 string +=    "<td>"+ $description +"</td> "
+                string +=    "<td>"+ $responsible +"</td> "
                 string +=    "<td>"+ $init +"</td> "
                 string +=    "<td>"+ $end +"</td> "
                 string +=    "<td><a href='#' class='btn btn-default btn-xs button-remove-task'><i class='glyphicon glyphicon-trash'></i></a></td> "
