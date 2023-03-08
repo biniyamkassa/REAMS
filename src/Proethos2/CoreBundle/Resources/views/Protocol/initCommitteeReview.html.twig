@@ -85,7 +85,7 @@
                     </table>
 
                     <a href='#' class='btn btn-default' data-toggle="modal" data-target="#modal-select-members-of-commitee">{% trans %}Select Members Of Committee{% endtrans %}</a>
-                    <a href='#' class='btn btn-default' data-toggle="modal" data-target="#modal-select-members-ad-hoc">{% trans %}Select Members Ad-Hoc{% endtrans %}</a>
+                    <a href='#' class='btn btn-default' data-toggle="modal" data-target="#modal-select-members-ad-hoc">{% trans %}Select External Reviewer{% endtrans %}</a>
                 </div>
             </div>
 
@@ -115,7 +115,7 @@
             <div class='row'>
                 <div class='submission-button-controls col-md-12'>
                     <button type="submit" class='btn btn-primary' id='button-save-and-wait-revisions'>{% trans %}Save and wait for comments{% endtrans %}</button>
-                    <button type="button" class='btn btn-primary' id='button-save-and-send-to-meeting' {% if protocol.opinionRequired > total_final_revisions %}disabled{% endif %}>{% trans %}Save and send to meeting{% endtrans %}</button>
+                    <button type="button" class='btn btn-primary' id='button-save-and-send-to-meeting' {% if protocol.opinionRequired > total_final_revisions %}disabled{% endif %}>{% trans %}Save and send to ERC{% endtrans %}</button>
                 </div>
             </div>
         </form>
@@ -182,7 +182,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" id="myModalLabel">{% trans %}Select Members Ad-Hoc{% endtrans %}</h4>
+                        <h4 class="modal-title" id="myModalLabel">{% trans %}Select External Reviewer{% endtrans %}</h4>
                     </div>
                     <div class="modal-body">
                         <table class='table table-hover table-condensed'>
