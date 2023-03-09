@@ -92,10 +92,10 @@
                     <div class='row' id="other-study-subject-row">
                         <div class="col-md-12">
                             <div class="form-group required">
-                                <label for="select-other-study-subject">Other Study Subject, Please specify</label>
+                                <label for="textarea-other-study-subject">Other Study Subject, Please specify</label>
                                 <a href="{{ path("crud_admin_help_show", {help_id: 316} ) }}" data-toggle="modal" data-target="#modal-help">
                                     <i class='glyphicon glyphicon-question-sign'></i></a>
-                                <textarea rows="4" class="form-control summernote" id='input-other-study-subject' name='other-study-subject'>{{ submission.studySubjectOther }}</textarea>
+                                <textarea rows="4" class="form-control summernote" id='textarea-other-study-subject' name='other-study-subject'>{{ submission.studySubjectOther }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -880,7 +880,7 @@
                     // cancel submit
                     e.preventDefault();
                     alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
-                    highlight_input_field('#select-study-subject', 'sn');
+                    highlight_input_field('#select-study-subject', 'sl');
                     return false;
                 }else if(($('#select-study-subject').val()=='others')&&($('#input-other-study-subject').summernote('isEmpty'))){
                     //check if the other study subject is not empty
