@@ -1560,22 +1560,6 @@ class NewSubmissionController extends Controller
                 }
                 $revisions[] = $item;
 
-                $text = $translator->trans('Minimum Age');
-                $item = array('text' => $text, 'status' => true);
-                if(empty($submission->getMinimumAge())) {
-                    $item = array('text' => $text, 'status' => false);
-                    $final_status = false;
-                }
-                $revisions[] = $item;
-
-                $text = $translator->trans('Maximum Age');
-                $item = array('text' => $text, 'status' => true);
-                if(empty($submission->getMaximumAge())) {
-                    $item = array('text' => $text, 'status' => false);
-                    $final_status = false;
-                }
-                $revisions[] = $item;
-
                 $text = $translator->trans('Justify sample size');
                 $item = array('text' => $text, 'status' => true);
                 if(empty($submission->getSampleSizeJustify())) {
@@ -1622,14 +1606,6 @@ class NewSubmissionController extends Controller
                 $revisions[] = $item;
 
             }
-
-            $text = $translator->trans('Interventions');
-            $item = array('text' => $text, 'status' => true);
-            if(empty($submission->getInterventions())) {
-                $item = array('text' => $text, 'status' => false);
-                $final_status = false;
-            }
-            $revisions[] = $item;
 
             $text = $translator->trans('Dependent Variables');
             $item = array('text' => $text, 'status' => true);
