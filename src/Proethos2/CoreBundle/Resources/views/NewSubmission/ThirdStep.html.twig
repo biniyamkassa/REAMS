@@ -507,7 +507,7 @@
                             <div class="form-group required">
                                 <label for="textarea-ethical-considerations">{% trans %}Ethical Considerations{% endtrans %}:</label>
                                 <a href="{{ path("crud_admin_help_show", {help_id: 322} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
-                                <textarea rows="4" class="form-control" id='textarea-ethical-considerations' name='ethical-considerations'>{{ submission.ethicalConsiderations }}</textarea>
+                                <textarea rows="4" class="form-control summernote" id='textarea-ethical-considerations' name='ethical-considerations'>{{ submission.ethicalConsiderations }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -882,12 +882,12 @@
                     alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
                     highlight_input_field('#select-study-subject', 'sl');
                     return false;
-                }else if(($('#select-study-subject').val()=='others')&&($('#input-other-study-subject').summernote('isEmpty'))){
+                }else if(($('#select-study-subject').val()=='others')&&($('#textarea-other-study-subject').summernote('isEmpty'))){
                     //check if the other study subject is not empty
                     // cancel submit
                     e.preventDefault();
                     alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
-                    highlight_input_field('#input-other-study-subject', 'sn');
+                    highlight_input_field('#textarea-other-study-subject', 'sn');
                     return false;
                 }
 
@@ -1011,8 +1011,7 @@
                     alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
                     highlight_input_field('#textarea-data-collection-tools', 'sn');
                     return false;
-                }
-            
+                }            
                 
                 if ( $('#textarea-data-collection-procedure').summernote('isEmpty') ) {
                     // cancel submit
@@ -1021,6 +1020,24 @@
                     highlight_input_field('#textarea-data-collection-procedure', 'sn');
                     return false;
                 }
+
+                if ( $('#textarea-general-procedures').summernote('isEmpty') ) {
+                    // cancel submit
+                    e.preventDefault();
+                    alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                    highlight_input_field('#textarea-general-procedures', 'sn');
+                    return false;
+                }
+
+                if ( $('#textarea-ethical-considerations').summernote('isEmpty') ) {
+                    // cancel submit
+                    e.preventDefault();
+                    alert('{% trans %}Notice: Please complete all required fields.{% endtrans %}');
+                    highlight_input_field('#textarea-ethical-considerations', 'sn');
+                    return false;
+
+                }          
+
             });
         });
 
