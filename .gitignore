@@ -28,3 +28,4 @@ app/sessions/*
 .idea/php.xml
 .idea/workspace.xml
 .idea/vcs.xml
+deploy.sh
