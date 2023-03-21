@@ -1144,7 +1144,7 @@ class ProtocolController extends Controller
                             $body = str_replace("%protocol_title%", $submission->getPublicTitle(), $body);
                             $body = str_replace("\r\n", "<br />", $body);
                             $body .= "<br /><br />";
-                            $body = $util->linkify($body);
+                            // $body = $util->linkify($body);
 
                             $message = \Swift_Message::newInstance()
                             ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("You were assigned to review a protocol"))
