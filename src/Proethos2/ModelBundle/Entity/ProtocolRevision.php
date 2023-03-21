@@ -45,6 +45,13 @@ class ProtocolRevision extends Base
      */
     private $member;
 
+    
+     /**
+     * @ORM\Column(type="boolean", nullable=true)
+     */
+    private $conflict_of_interest;
+
+
     /**
      * @ORM\Column(type="boolean")
      */
@@ -143,6 +150,31 @@ class ProtocolRevision extends Base
     {
         return $this->answered;
     }
+
+        /**
+     * Set answered
+     *
+     * @param boolean $answered
+     *
+     * @return ProtocolRevision
+     */
+    public function setConflictOfInterest($conflict_of_interest)
+    {
+        $this->conflict_of_interest = $conflict_of_interest;
+
+        return $this;
+    }
+
+    /**
+     * Get answered
+     *
+     * @return boolean
+     */
+    public function getConflictOfInterest()
+    {
+        return $this->conflict_of_interest;
+    }
+
 
     /**
      * Set member

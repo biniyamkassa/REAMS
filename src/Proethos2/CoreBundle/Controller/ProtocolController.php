@@ -1133,7 +1133,7 @@ class ProtocolController extends Controller
 
                             $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
                             // $url = $baseurl . $this->generateUrl('home');
-                            $url = $baseurl . $this->generateUrl('protocol_show_protocol', array("protocol_id" => $protocol->getId()));
+                            $url = $baseurl . $this->generateUrl('protocol_conflict_of_interest', array("protocol_id" => $protocol->getId()));
 
                             $help = $help_repository->find(215);
                             $translations = $trans_repository->findTranslations($help);
@@ -1141,6 +1141,7 @@ class ProtocolController extends Controller
                             $body = ( $text ) ? $text['message'] : $help->getMessage();
                             $body = str_replace("%protocol_url%", $url, $body);
                             $body = str_replace("%protocol_code%", $protocol->getCode(), $body);
+                            $body = str_replace("%protocol_title%", $submission->getPublicTitle(), $body);
                             $body = str_replace("\r\n", "<br />", $body);
                             $body .= "<br /><br />";
                             $body = $util->linkify($body);
@@ -2112,4 +2113,88 @@ class ProtocolController extends Controller
         return $response;
     }
 
+/**
+     * @Route("/protocol/{protocol_id}/conflict-of-interest", name="protocol_conflict_of_interest")
+     * @Template()
+     */
+    public function delareInterestConflictAction($protocol_id)
+    {
+
+        $output = array();
+        $request = $this->getRequest();
+        $session = $request->getSession();
+        $translator = $this->get('translator');
+        $em = $this->getDoctrine()->getManager();
+
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+
+        $protocol_repository = $em->getRepository('Proethos2ModelBundle:Protocol');        
+        $protocol_revision_repository = $em->getRepository('Proethos2ModelBundle:ProtocolRevision');
+    
+        $util = new Util($this->container, $this->getDoctrine());
+
+        // getting the current submission
+        $protocol = $protocol_repository->find($protocol_id);
+        $submission = $protocol->getMainSubmission();
+        $output['protocol'] = $protocol;
+
+        $mail_translator = $this->get('translator');
+        $mail_translator->setLocale($submission->getLanguage());
+
+        $trans_repository = $em->getRepository('Gedmo\\Translatable\\Entity\\Translation');
+        $help_repository = $em->getRepository('Proethos2ModelBundle:Help');
+        // $help = $help_repository->findBy(array("id" => {id}, "type" => "mail"));
+        // $translations = $trans_repository->findTranslations($help[0]);
+     
+        
+        if (!$protocol or $protocol->getStatus() != "H") {
+            throw $this->createNotFoundException($translator->trans('No protocol found'));
+        }
+        
+        $user = $this->get('security.token_storage')->getToken()->getUser();
+        
+        $revision = $protocol_revision_repository->findOneBy(array('member' => $user, "protocol" => $protocol));
+        $output['revision']=$revision;
+        
+        if (!$revision) {
+            throw $this->createNotFoundException($translator->trans('No revison found'));
+        }
+
+        // checking if was a post request
+        if($this->getRequest()->isMethod('POST')) {
+
+            $submittedToken = $request->request->get('token');
+
+            if (!$this->isCsrfTokenValid('conflict-of-interest', $submittedToken)) {
+                throw $this->createNotFoundException($translator->trans('CSRF token not valid'));
+            }
+
+           
+                if((isset($post_data['accept']) xor isset($post_data['accept']))) {
+                    $session->getFlashBag()->add('error', $translator->trans("Field accept or reject is required."));
+                    return $output;
+                }
+        
+             // getting post data
+             $post_data = $request->request->all();
+             if(isset($post_data['accept'])){
+                 $revision->setConflictOfInterest(0);
+                 $em->persist($revision);
+                 $em->flush();                 
+                 $session->getFlashBag()->add('success', $translator->trans("Conflict of interest declaration saved with success!"));
+                 return $this->redirectToRoute('protocol_show_protocol', array('protocol_id' => $protocol->getId()), 301);
+             }
+             
+             if(isset($post_data['reject'])){
+                $em->remove($revision);
+                $em->flush();
+                $session->getFlashBag()->add('success', $translator->trans("Removed your assignment with success!"));
+                return $this->redirectToRoute('home');
+             }
+             
+            return $this->redirectToRoute('protocol_show_protocol', array('protocol_id' => $protocol->getId()), 301);
+        }
+
+        return $output;
+    }
 }
