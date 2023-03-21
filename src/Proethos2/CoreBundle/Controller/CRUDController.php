@@ -1154,7 +1154,7 @@ class CRUDController extends Controller
             $post_data = $request->request->all();
 
             // checking required fields
-            foreach(array('name', 'username', 'email', 'country', ) as $field) {
+            foreach(array('name', 'username', 'email', 'country', 'institution','phone',) as $field) {
                 if(!isset($post_data[$field]) or empty($post_data[$field])) {
                     $session->getFlashBag()->add('error', $translator->trans("Field '%field%' is required.", array("%field%" => $field)));
                     return $output;
@@ -1181,6 +1181,7 @@ class CRUDController extends Controller
             $user->setUsername($post_data['username']);
             $user->setEmail($post_data['email']);
             $user->setInstitution($post_data['institution']);
+            $user->setPhone($post_data['phone']);
             $user->setFirstAccess(false);
 
             if(isset($post_data['status'])) {
