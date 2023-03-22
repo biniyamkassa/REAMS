@@ -1241,6 +1241,15 @@ class ProtocolController extends Controller
         $submission = $protocol->getMainSubmission();
         $output['protocol'] = $protocol;
 
+        $finish_options = array(
+            "A" => $translator->trans("Accept with minor revision"),
+            'F' => $translator->trans('Accept with major revision'),
+            'X' => $translator->trans('Exempted'),
+            // 'C' => $translator->trans('Conditional approval'),
+            'N' => $translator->trans('Rejected'),
+        );
+        $output['finish_options'] = $finish_options;
+
         $mail_translator = $this->get('translator');
         $mail_translator->setLocale($submission->getLanguage());
 
@@ -1395,11 +1404,11 @@ class ProtocolController extends Controller
         $upload_type_repository = $em->getRepository('Proethos2ModelBundle:UploadType');
 
         $finish_options = array(
-            "A" => $translator->trans("Approved"),
-            'N' => $translator->trans('Not approved'),
-            'C' => $translator->trans('Conditional approval'),
-            'X' => $translator->trans('Expedite approval'),
-            'F' => $translator->trans('Exempt'),
+            "A" => $translator->trans("Accept with minor revision"),
+            'F' => $translator->trans('Accept with major revision'),
+            'X' => $translator->trans('Exempted'),
+            // 'C' => $translator->trans('Conditional approval'),
+            'N' => $translator->trans('Rejected'),
         );
         $output['finish_options'] = $finish_options;
 

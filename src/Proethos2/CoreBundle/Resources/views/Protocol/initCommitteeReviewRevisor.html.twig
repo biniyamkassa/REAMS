@@ -74,8 +74,13 @@
                         <div class="form-group required">
                             <label for="input-decision">{% trans %}Decision{% endtrans %}:</label> 
                             <a href="{{ path("crud_admin_help_show", {help_id: 113} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
-                            <input type='text' class="form-control" id='input-decision' name="decision" value="{{ protocol_revision.decision }}" required {% if protocol_revision.isFinalRevision %}readonly{% endif %}>
-
+                            {# <input type='text' class="form-control" id='input-decision' name="decision" value="{{ protocol_revision.decision }}" required {% if protocol_revision.isFinalRevision %}readonly{% endif %}> #}
+                            <select class="form-control select2" id="select-decision" name="decision" required {% if protocol_revision.isFinalRevision %}readonly{% endif %}>
+                                <option value="">-</option>
+                                {% for key, option in finish_options %}
+                                    <option {{ protocol_revision.decision == key ? 'selected' : '' }} value="{{ key }}">{{ option }}</option>
+                                {% endfor %}
+                            </select>
                         </div>
                     </div>
                 </div>
