@@ -75,6 +75,7 @@
                             <label for="input-decision">{% trans %}Decision{% endtrans %}:</label> 
                             <a href="{{ path("crud_admin_help_show", {help_id: 113} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
                             <input type='text' class="form-control" id='input-decision' name="decision" value="{{ protocol_revision.decision }}" required {% if protocol_revision.isFinalRevision %}readonly{% endif %}>
+
                         </div>
                     </div>
                 </div>
@@ -143,10 +144,10 @@
                 </div>
                 <div class='row'>
                     <div class="col-md-12">
-                        <div class="form-group required">
+                        <div class="form-group">
                             <label for="input-suggestions">{% trans %}Suggestions{% endtrans %}:</label> 
                             <a href="{{ path("crud_admin_help_show", {help_id: 121} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
-                            <input type='text' class="form-control" id='input-suggestions' name="suggestions" value="{{ protocol_revision.suggestions }}" required {% if protocol_revision.isFinalRevision %}readonly{% endif %}>
+                            <input type='text' class="form-control" id='input-suggestions' name="suggestions" value="{{ protocol_revision.suggestions }}" {% if protocol_revision.isFinalRevision %}readonly{% endif %}>
                         </div>
                     </div>
                 </div>

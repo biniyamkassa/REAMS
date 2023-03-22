@@ -1063,7 +1063,7 @@ class ProtocolController extends Controller
 
         // getting users
         $users = $user_repository->findAll();
-        $users=array_filter($users,function($user) use ($exclude_users){
+        $users = array_filter($users,function($user) use ($exclude_users){
             return !in_array($user->getId(),$exclude_users);
         });
         $output['users'] = $users;
@@ -1277,7 +1277,7 @@ class ProtocolController extends Controller
             if(!$protocol_revision->getIsFinalRevision()) {
 
                 // checking required files
-                foreach(array('decision', 'suggestions') as $field) {
+                foreach(array('decision') as $field) {
                     if(!isset($post_data[$field]) or empty($post_data[$field])) {
                         $session->getFlashBag()->add('error', $translator->trans("Field '%field%' is required.", array("%field%" => $field)));
                         return $output;
