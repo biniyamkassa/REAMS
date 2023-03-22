@@ -1054,9 +1054,18 @@ class ProtocolController extends Controller
 
         $output['role_member_of_committee'] = $role_member_of_committee;
         $output['role_member_ad_hoc'] = $role_member_ad_hoc;
+        
+        $exclude_users = [];
+        $exclude_users[] = $submission->getOwner()->getId(); // execlude the PI
+        foreach($submission->getTeam() as $investigator){    // execlude other members
+            $exclude_users[]=$investigator->getId();
+        }
 
         // getting users
         $users = $user_repository->findAll();
+        $users=array_filter($users,function($user) use ($exclude_users){
+            return !in_array($user->getId(),$exclude_users);
+        });
         $output['users'] = $users;
 
         // gettings meetings
