@@ -2187,11 +2187,11 @@ class ProtocolController extends Controller
                 throw $this->createNotFoundException($translator->trans('CSRF token not valid'));
             }
 
-           
-                if((isset($post_data['accept']) xor isset($post_data['accept']))) {
-                    $session->getFlashBag()->add('error', $translator->trans("Field accept or reject is required."));
-                    return $output;
-                }
+        
+            if((isset($post_data['accept']) xor isset($post_data['accept']))) {
+                $session->getFlashBag()->add('error', $translator->trans("Field accept or reject is required."));
+                return $output;
+            }
         
              // getting post data
              $post_data = $request->request->all();
@@ -2205,6 +2205,42 @@ class ProtocolController extends Controller
              
              if(isset($post_data['reject'])){
                 $em->remove($revision);
+
+
+                $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+                // $url = $baseurl . $this->generateUrl('home');
+                $url = $baseurl . $this->generateUrl('protocol_initial_committee_review', array("protocol_id" => $protocol->getId()));
+
+                $help = $help_repository->find(224);
+                $translations = $trans_repository->findTranslations($help);
+                $text = $translations[$submission->getLanguage()];
+                $body = ( $text ) ? $text['message'] : $help->getMessage();
+                $body = str_replace("%inital_committee_review_url%", $url, $body);
+                $body = str_replace("%research_title%",$submission->getPublicTitle(), $body);
+                $body = str_replace("%name_of_reviewer%",$user->getName(), $body);
+                $body = str_replace("\r\n", "<br />", $body);
+                $body .= "<br /><br />";
+                $body = $util->linkify($body);
+
+                $secretaries_emails = array();
+                foreach($user_repository->findByIsActive(true) as $secretary) {
+                    if(in_array("secretary", $secretary->getRolesSlug())) {
+                        $secretaries_emails[] = $secretary->getEmail();
+                    }
+                }
+
+                $message = \Swift_Message::newInstance()
+                ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("Conflict of Interest Declaration for Assigned Review"))
+                ->setFrom($util->getConfiguration('committee.email'))
+                ->setTo($secretaries_emails)
+                ->setBody(
+                    $body
+                    ,
+                    'text/html'
+                );
+
+                $send = $this->get('mailer')->send($message);
+
                 $em->flush();
                 $session->getFlashBag()->add('success', $translator->trans("Removed your assignment with success!"));
                 return $this->redirectToRoute('home');
