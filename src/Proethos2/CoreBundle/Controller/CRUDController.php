@@ -376,10 +376,11 @@ class CRUDController extends Controller
         $query = $protocol_repository->createQueryBuilder('p')
            ->join('p.main_submission', 's')
            ->join('s.owner', 'o')
-           ->where("(s.publicTitle LIKE :query OR p.code LIKE :query OR o.name LIKE :query) AND p.status IN (:status)")
+           ->where("(s.publicTitle LIKE :query OR p.code LIKE :query OR o.name LIKE :query ) AND p.is_deleted != :deleted AND p.status IN (:status)")
            ->orderBy("p.created", 'DESC')
            ->setParameter('query', "%". $search_query ."%")
-           ->setParameter('status', $status_array);
+           ->setParameter('status', $status_array)        
+           ->setParameter('deleted', 1);
 
         $protocols = $query->getQuery()->getResult();
         $output['protocols'] = $protocols;

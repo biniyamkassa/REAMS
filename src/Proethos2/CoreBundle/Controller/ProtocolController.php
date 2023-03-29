@@ -1784,7 +1784,8 @@ class ProtocolController extends Controller
             }
 
             if($post_data['are-you-sure'] == 'yes') {
-                $em->remove($protocol);
+                $protocol->setIsDeleted(1);
+                $em->persist($protocol);
                 $em->flush();
 
                 // user activity log

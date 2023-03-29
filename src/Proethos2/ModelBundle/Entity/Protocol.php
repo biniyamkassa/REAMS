@@ -44,6 +44,12 @@ class Protocol extends Base
      * @ORM\Column(type="integer", nullable=true)
      */
     private $migrated_id;
+      /**
+     * @var integer
+     *
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $is_deleted=0;
 
     /**
      * @ORM\Column(type="string", length=20, nullable=true)
@@ -257,12 +263,40 @@ class Protocol extends Base
     {
         return $this->owner;
     }
+    /**
+     * Set softdelte
+     *
+     * @param string $is_deleted
+     *
+     * @return Protocol
+     */
+    public function setIsDeleted($is_deleted){
+
+        $this->is_deleted = $is_deleted;
+
+        return $this;
+        
+    }
+
+      /**
+     * Set softdelete
+     *
+     * @param integer $status
+     *
+     * @return Protocol
+     */
+
+    public function getIsDeleted(){
+
+        return $this->is_deleted;
+
+    }
+
 
     /**
-     * Set status
+     * Get soft delete value
      *
-     * @param string $status
-     *
+     * 
      * @return Protocol
      */
     public function setStatus($status)
