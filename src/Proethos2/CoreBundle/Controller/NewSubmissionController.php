@@ -616,8 +616,8 @@ class NewSubmissionController extends Controller
                     $activity->setGender($selected_gender);
 
                     // recruitment status
-                    $selected_recruitment_status = $recruitment_status_repository->find($post_data['activity-recruitment-status']);
-                    $activity->setRecruitmentStatus($selected_recruitment_status);
+                    // $selected_recruitment_status = $recruitment_status_repository->find($post_data['activity-recruitment-status']);
+                    // $activity->setRecruitmentStatus($selected_recruitment_status);
                 }
 
                 $em->persist($activity);
@@ -777,8 +777,8 @@ class NewSubmissionController extends Controller
                 $submission->setGender($selected_gender);
 
                 // recruitment status
-                $selected_recruitment_status = $recruitment_status_repository->find($post_data['recruitment-status']);
-                $submission->setRecruitmentStatus($selected_recruitment_status);
+                // $selected_recruitment_status = $recruitment_status_repository->find($post_data['recruitment-status']);
+                // $submission->setRecruitmentStatus($selected_recruitment_status);
 
                 // removing all team to read
                 foreach($submission->getCountry() as $country) {
