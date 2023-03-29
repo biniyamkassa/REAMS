@@ -1201,6 +1201,8 @@ class NewSubmissionController extends Controller
         $upload_types = $upload_type_repository->findByStatus(true);
         $output['upload_types'] = $upload_types;
 
+        $output['upload_file_size'] = Util::get_printable_file_size() ;
+
         if (!$submission or $submission->getCanBeEdited() == false) {
             if(!$submission or ($submission->getProtocol()->getIsMigrated() and !in_array('administrator', $user->getRolesSlug()))) {
                 throw $this->createNotFoundException($translator->trans('No submission found'));
@@ -1260,6 +1262,14 @@ class NewSubmissionController extends Controller
                     $session->getFlashBag()->add('error', $translator->trans("File extension not allowed"));
                     return $output;
                 }
+
+                //check file size
+                $allowed_file_size = Util::get_allowed_file_size();
+                if ($allowed_file_size < $file->getClientSize()) {
+                    $session->getFlashBag()->add('error', $translator->trans("The file size exudes the allowed file size"));
+                    return $output;
+                }
+
 
                 // Scan file for viruses
                 $cloudmersive_apikey = ( $_ENV['CLOUDMERSIVE_APIKEY'] ) ? $_ENV['CLOUDMERSIVE_APIKEY'] : '';

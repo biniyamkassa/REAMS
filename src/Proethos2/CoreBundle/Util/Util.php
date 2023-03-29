@@ -54,4 +54,43 @@ class Util {
         // make the urls to hyperlinks
         return preg_replace($reg_pattern, "<a href=\"\\0\" target=\"_blank\" rel=\"noopener noreferrer\">\\0</a>", $string);
     }
+
+    public static function return_bytes($val) {
+        $val = trim($val);
+        $last = strtolower($val[strlen($val)-1]);
+        switch($last) {
+            // The 'G' modifier is available
+            case 'g':
+                $val *= 1024;
+            case 'm':
+                $val *= 1024;
+            case 'k':
+                $val *= 1024;
+        }
+    
+        return $val;
+    }
+
+    private static function get_allowed_file_size_in_text(){
+        $update_file_size = self::return_bytes(ini_get('upload_max_filesize'));
+        $update_post_size = self::return_bytes(ini_get('post_max_size'));
+        if($update_file_size > $update_post_size)
+            return ini_get('post_max_size');
+        return ini_get('upload_max_filesize');
+    }
+
+    public static function get_allowed_file_size(){
+        //compare teh lowers file size and select the one to display
+        return self::return_bytes(self::get_allowed_file_size_in_text());
+    }
+
+    public static function get_printable_file_size(){
+        $pritable_text =strtolower(self::get_allowed_file_size_in_text());
+
+        $search = ['m','g','k'];
+        $repalce = ['MB','GB','KG'];
+
+        return str_replace($search,$repalce,$pritable_text);
+
+    }
 }
