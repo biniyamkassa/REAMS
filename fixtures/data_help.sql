@@ -74,7 +74,15 @@ REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VA
 REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (218,'2019-02-21 15:42:08','2019-02-21 15:42:08',1,'mail','Hello!\r\n\r\nA new comment has been submitted:\r\n\r\n"%comment%"\r\n\r\nAccess the link below for more details:\r\n\r\n%protocol_url%\r\n\r\nRegards,\r\nCMHS REC');
 REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (219,'2019-02-21 15:42:08','2019-02-21 15:42:08',1,'mail','Hello!\r\n\r\nA new protocol review has been submitted.\r\n\r\nAccess the link below for more details:\r\n\r\nProtocol <b>%protocol_code%</b>: %protocol_url%\r\n\r\nRegards,\r\nCMHS REC');
 REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (223,'2019-02-21 15:42:08','2019-02-21 15:42:08',1,'mail','Hello!\r\n\r\nThis is to remind you that protocol <b>%protocol_code%</b> has a pending monitoring action that is due on <b>%monitoring_date%</b>.\r\n\r\nPlease access your account in the system to present your monitoring action.\r\n\r\nRegards,\r\nCMHS REC');
-REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (224,'2019-02-21 15:42:08','2019-02-21 15:42:08',1,'mail','Hello!\r\n\r\nThis is email is sent to inform you that the review assigned to the research application titled <b>%research_title%</b> cannot be completed due to a conflict of interest that has been declared by the assigned reviewer %name_of_reviewer%. Our system has been designed to ensure that all reviews are unbiased and impartial, and the identification of a conflict of interest is an important step in maintaining the integrity of the review process. We kindly request that you assign a new reviewer for this research application as soon as possible. Use the following link to assign another reviewer %inital_committee_review_url% \r\n\r\nRegards,\r\nCMHS REC');
+REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (224,'2019-02-21 15:42:08','2019-02-21 15:42:08',1,'mail','Hello! 
+
+This is email is sent to inform you that the review assigned to the research application entitled "<b>%research_title%</b>" cannot be completed due to a conflict of interest that has been declared by the assigned reviewer %name_of_reviewer%. 
+
+The system has been designed to ensure that all reviews are unbiased and impartial, and the identification of a conflict of interest is an important step in maintaining the integrity of the review process. Please assign a new reviewer for this research proposal as soon as possible. Use the following link to assign another reviewer %inital_committee_review_url% 
+
+Regards, 
+
+CMHS REC');
 
 REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (300,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Study design');
 REPLACE INTO `help` (`id`, `created`, `updated`, `status`, `type`, `message`) VALUES (301,'2016-06-16 14:11:29','2016-06-16 14:11:29',1,'help','Research Area and Period');
