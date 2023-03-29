@@ -2148,6 +2148,7 @@ class ProtocolController extends Controller
 
         $protocol_repository = $em->getRepository('Proethos2ModelBundle:Protocol');        
         $protocol_revision_repository = $em->getRepository('Proethos2ModelBundle:ProtocolRevision');
+        $user_repository = $em->getRepository('Proethos2ModelBundle:User');
     
         $util = new Util($this->container, $this->getDoctrine());
 
