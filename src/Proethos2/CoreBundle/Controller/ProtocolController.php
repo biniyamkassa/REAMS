@@ -2167,7 +2167,7 @@ class ProtocolController extends Controller
         // $translations = $trans_repository->findTranslations($help[0]);
      
         
-        if (!$protocol or $protocol->getStatus() != "H") {
+        if (!$protocol) {
             throw $this->createNotFoundException($translator->trans('No protocol found'));
         }
         
