@@ -1674,13 +1674,6 @@ class NewSubmissionController extends Controller
             }
             $revisions[] = $item;
 
-            $text = $translator->trans('Limitations');
-            $item = array('text' => $text, 'status' => true);
-            if(empty($submission->getLimitations())) {
-                $item = array('text' => $text, 'status' => false);
-                $final_status = false;
-            }
-            $revisions[] = $item;
 
             $text = $translator->trans('Funding Source');
             $item = array('text' => $text, 'status' => true);
