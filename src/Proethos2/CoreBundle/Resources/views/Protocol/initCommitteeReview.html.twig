@@ -56,6 +56,7 @@
                                 <th>{% trans %}E-mail{% endtrans %}</th>
                                 <th>{% trans %}Country{% endtrans %}</th>
                                 <th>{% trans %}Recruitment Date{% endtrans %}</th>
+                                <th>{% trans %}Declaration{% endtrans %}</th>
                                 <th>{% trans %}Status{% endtrans %}</th>
                                 <th>{% trans %}Actions{% endtrans %}</th>
                             </tr>
@@ -69,6 +70,14 @@
                                     <td><a href='{{ revision.member.email }}'>{{ revision.member.email }}</a></td>
                                     <td>{{ revision.member.country }}</td>
                                     <td>{{ revision.created|date("d/m/Y") }}</td>
+                                    <td>
+                                        {% if revision.declarationStatus == 'AC' %}<span class='label label-success'>{% trans %}Fully Singed{% endtrans %}</span>{% endif %}
+                                        {% if revision.declarationStatus == 'NW' %}<span class='label label-warning'>{% trans %}Declined Reviewer Assurance{% endtrans %}</span>{% endif %}
+                                        {% if revision.declarationStatus == 'CI' %}<span class='label label-danger'>{% trans %}Conflict of Interest{% endtrans %}</span>{% endif %}
+                                        {% if revision.declarationStatus == 'WI' %}<span class='label label-success'>{% trans %}Reviewer Assurance signed{% endtrans %}</span>{% endif %}
+                                        {% if not revision.declarationStatus %}<span class='label label-default'>{% trans %}Not Singed{% endtrans %}</span>{% endif %}
+
+                                    </td>
                                     <td>
                                         {% if revision.answered and not revision.isFinalRevision %}<span class='label label-primary'>{% trans %}Answered{% endtrans %}</span>{% endif %}
                                         {% if revision.isFinalRevision %}<span class='label label-success'>{% trans %}Final Revision{% endtrans %}</span>{% endif %}

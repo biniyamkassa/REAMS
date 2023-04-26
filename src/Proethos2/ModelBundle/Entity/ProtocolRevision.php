@@ -47,9 +47,9 @@ class ProtocolRevision extends Base
 
     
      /**
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(name="declaration_status", type="string", length=255, nullable=true)
      */
-    private $conflict_of_interest;
+    private $declaration_status;
 
 
     /**
@@ -158,21 +158,20 @@ class ProtocolRevision extends Base
      *
      * @return ProtocolRevision
      */
-    public function setConflictOfInterest($conflict_of_interest)
+    public function setDeclarationStatus($declaration_status)
     {
-        $this->conflict_of_interest = $conflict_of_interest;
-
+        $this->declaration_status = $declaration_status;
         return $this;
     }
 
     /**
      * Get answered
      *
-     * @return boolean
+     * @return string
      */
-    public function getConflictOfInterest()
+    public function getDeclarationStatus()
     {
-        return $this->conflict_of_interest;
+        return $this->declaration_status;
     }
 
 

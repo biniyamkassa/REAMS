@@ -2197,17 +2197,68 @@ class ProtocolController extends Controller
         
              // getting post data
              $post_data = $request->request->all();
-             if(isset($post_data['accept'])){
-                 $revision->setConflictOfInterest(0);
+             if(isset($post_data['accept-willingness'])){
+                 $revision->setDeclarationStatus('WI');
                  $em->persist($revision);
                  $em->flush();                 
+                 $session->getFlashBag()->add('success', $translator->trans("Declaration saved with success!"));
+                 return $output;
+             }
+
+            if(isset($post_data['reject-willingness'])){
+                 $revision->setDeclarationStatus('NW');
+
+                 $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
+                 // $url = $baseurl . $this->generateUrl('home');
+                 $url = $baseurl . $this->generateUrl('protocol_initial_committee_review', array("protocol_id" => $protocol->getId()));
+
+                 $help = $help_repository->find(225);
+                 $translations = $trans_repository->findTranslations($help);
+                 $text = $translations[$submission->getLanguage()];
+                 $body = ( $text ) ? $text['message'] : $help->getMessage();
+                 $body = str_replace("%inital_committee_review_url%", $url, $body);
+                 $body = str_replace("%research_title%",$submission->getPublicTitle(), $body);
+                 $body = str_replace("%name_of_reviewer%",$user->getName(), $body);
+                 $body = str_replace("\r\n", "<br />", $body);
+                 $body .= "<br /><br />";
+                 $body = $util->linkify($body);
+
+                 $secretaries_emails = array();
+                 foreach($user_repository->findByIsActive(true) as $secretary) {
+                     if(in_array("secretary", $secretary->getRolesSlug())) {
+                         $secretaries_emails[] = $secretary->getEmail();
+                     }
+                 }
+
+                 $message = \Swift_Message::newInstance()
+                 ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("Declined Declaration: Assign New Reviewer"))
+                 ->setFrom($util->getConfiguration('committee.email'))
+                 ->setTo($secretaries_emails)
+                 ->setBody(
+                     $body,
+                     'text/html'
+                 );
+
+                 $send = $this->get('mailer')->send($message);
+
+
+                 $em->persist($revision);
+                 $em->flush();
+                 $session->getFlashBag()->add('success', $translator->trans("Declaration saved with success!"));
+                 return $this->redirectToRoute('home',array(), 301);
+             }
+
+             if(isset($post_data['accept'])){
+                 $revision->setDeclarationStatus('AC');
+                 $em->persist($revision);
+                 $em->flush();
                  $session->getFlashBag()->add('success', $translator->trans("Conflict of interest declaration saved with success!"));
                  return $this->redirectToRoute('protocol_show_protocol', array('protocol_id' => $protocol->getId()), 301);
              }
-             
-             if(isset($post_data['reject'])){
-                $em->remove($revision);
 
+             if(isset($post_data['reject'])){
+
+                $revision->setDeclarationStatus('CI');
 
                 $baseurl = $request->getScheme() . '://' . $request->getHttpHost() . $request->getBasePath();
                 // $url = $baseurl . $this->generateUrl('home');
@@ -2243,12 +2294,13 @@ class ProtocolController extends Controller
 
                 $send = $this->get('mailer')->send($message);
 
+                $em->persist($revision);
                 $em->flush();
-                $session->getFlashBag()->add('success', $translator->trans("Removed your assignment with success!"));
+                $session->getFlashBag()->add('success', $translator->trans("Declaration saved!"));
                 return $this->redirectToRoute('home');
-             }
-             
-            return $this->redirectToRoute('protocol_show_protocol', array('protocol_id' => $protocol->getId()), 301);
+            }
+
+            return $this->redirectToRoute('home',array(), 301);
         }
 
         return $output;
