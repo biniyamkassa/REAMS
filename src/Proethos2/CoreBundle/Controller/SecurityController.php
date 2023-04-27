@@ -735,7 +735,7 @@ class SecurityController extends Controller
             $user->setEmail($post_data['email']);
             $user->setInstitution($post_data['institution']);
             $user->setFirstAccess(false);
-            $user->setIsActive(false);
+            $user->setIsActive(true);
             $user->setPhone($post_data['phone']);
 
             $encoderFactory = $this->get('security.encoder_factory');
@@ -797,6 +797,15 @@ class SecurityController extends Controller
 
             $em->persist($user);
             $em->flush();
+
+            $role_repository = $em->getRepository('Proethos2ModelBundle:Role');
+            $investigator_role =$role_repository->findOneBy(array('slug'=>'Investigator'));
+
+            $user->removeProethos2Role($investigator_role);
+            $user->addProethos2Role($investigator_role);
+            $em->persist($user);
+            $em->flush();
+
 
             $session->getFlashBag()->add('success', $translator->trans("User created with success. Wait for approval."));
             return $this->redirectToRoute('home', array(), 301);
