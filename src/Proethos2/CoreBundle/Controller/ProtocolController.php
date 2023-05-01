@@ -1996,10 +1996,10 @@ class ProtocolController extends Controller
         $main->addChild('acronym', $submission->getTitleAcronym());
         $main->addChild('scientific_title', $submission->getScientificTitle());
         $main->addChild('scientific_acronym', $submission->getTitleAcronym());
-        $main->addChild('date_enrolment', $protocol->getDateInformed()->format("Y-m-d"));
+        if($protocol->getDateInformed())
+            $main->addChild('date_enrolment', $protocol->getDateInformed()->format("Y-m-d"));
         $main->addChild('type_enrolment', "actual");
         $main->addChild('target_size', $submission->getSampleSize());
-        $main->addChild('recruitment_status', $submission->getRecruitmentStatus()->getName());
         $main->addChild('url', $baseurl . $this->generateUrl('protocol_show_protocol', array('protocol_id' => $protocol->getId())));
         $main->addChild('study_type', "");
         $main->addChild('study_design', $submission->getStudyDesign());
@@ -2066,7 +2066,8 @@ class ProtocolController extends Controller
         $criteria->addChild('inclusion_criteria', $submission->getInclusionCriteria());
         $criteria->addChild('agemin', $submission->getMinimumAge() . "Y");
         $criteria->addChild('agemax', $submission->getMaximumAge() . "Y");
-        $criteria->addChild('gender', substr($submission->getGender()->getName(), 0, 1));
+        if($submission->getGender())
+            $criteria->addChild('gender', substr($submission->getGender()->getName(), 0, 1));
         $criteria->addChild('exclusion_criteria', $submission->getExclusionCriteria());
 
         $primary_outcome = $main->addChild('primary_outcome');
