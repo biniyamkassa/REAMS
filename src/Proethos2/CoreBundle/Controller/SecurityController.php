@@ -297,7 +297,7 @@ class SecurityController extends Controller
     /**
      * @Route("/logged", name="default_security_target")
      */
-    public function loggedAction()
+    public function loggedAction(Request $request)
     {
         $user = $this->get('security.token_storage')->getToken()->getUser();
         $isActive = $user->getIsActive();
@@ -311,7 +311,18 @@ class SecurityController extends Controller
             if ( count($user->getRolesSlug()) == 1 and 'administrator' == $user->getRolesSlug()[0] ) {
                 return $this->redirectToRoute('crud_admin_configuration_list', array(), 301);
             }
-            
+             $key = '_security.default.target_path'; #where "main" is your firewall name
+
+            //check if the referrer session key has been set
+            if ($this->container->get('session')->has($key)) {
+                //set the url based on the link they were trying to access before being authenticated
+                $url = $this->container->get('session')->get($key);
+
+                //remove the session key
+                $this->container->get('session')->remove($key);
+                return $this->redirect($url);
+            }
+
             if($_roles_intersect) {
                 return $this->redirectToRoute('crud_committee_protocol_list', array(), 301);
             } else {   
