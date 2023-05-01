@@ -334,6 +334,9 @@ class ProtocolController extends Controller
             throw $this->createNotFoundException($translator->trans('No protocol found'));
         }
 
+        $output['upload_file_size'] = Util::get_printable_file_size();
+        $output['upload_file_size_bytes'] = Util::get_allowed_file_size();
+
         $referer = $request->headers->get('referer');
 
         // checking if was a post request
@@ -1434,6 +1437,9 @@ class ProtocolController extends Controller
         $protocol = $protocol_repository->find($protocol_id);
         $submission = $protocol->getMainSubmission();
         $output['protocol'] = $protocol;
+
+        $output['upload_file_size'] = Util::get_printable_file_size();
+        $output['upload_file_size_bytes'] = Util::get_allowed_file_size();
 
         $mail_translator = $this->get('translator');
         $mail_translator->setLocale($submission->getLanguage());

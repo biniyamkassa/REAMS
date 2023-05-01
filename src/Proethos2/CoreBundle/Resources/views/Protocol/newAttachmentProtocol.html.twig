@@ -26,6 +26,9 @@
             <label for="input-new-attachment-file">{% trans %}File{% endtrans %}:</label> 
             <a href="{{ path("crud_admin_help_show", {help_id: 12} ) }}" data-toggle="modal" data-target="#modal-help"><i class='glyphicon glyphicon-question-sign'></i></a>
             <input type='file' class='form-control' name='new-attachment-file' id='input-new-attachment-file' required>
+
+            Maximum allowed file upload size : {{upload_file_size}}
+            <br>
         </div>
     </div>
 
@@ -51,6 +54,16 @@
 
                 $(this).empty().append(options).selectpicker("refresh");
             });
+
+            $("#form-new-attachment").on('submit', function(e) {
+                e.preventDefault();
+                var fileInput = $('#input-new-attachment-file');
+                if(fileInput.get(0).files.length && fileInput.get(0).files[0].size > {{ upload_file_size_bytes }} ){
+                    toastr.error('The file exceeds the allowed file size limit ({{upload_file_size}})');
+                }else{
+                    this.submit();
+                }
+            })
         });
     </script>
 {% endblock %}
