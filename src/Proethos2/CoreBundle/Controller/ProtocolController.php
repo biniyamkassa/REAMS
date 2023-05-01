@@ -1270,6 +1270,22 @@ class ProtocolController extends Controller
             throw $this->createNotFoundException($translator->trans('You cannot edit this protocol'));
         }
 
+        switch($protocol_revision->getDeclarationStatus()){
+            case 'CI':
+                $session->getFlashBag()->add('error', $translator->trans("You have declared conflict of interest for this protocol!"));
+                return $this->redirectToRoute('protocol_conflict_of_interest', array('protocol_id' => $protocol->getId()), 301);
+            case 'NW':
+                $session->getFlashBag()->add('error', $translator->trans("You have already singed not to review the protocol!"));
+                return $this->redirectToRoute('home', array(),301);
+            case 'WI':
+                $session->getFlashBag()->add('error', $translator->trans("You have remaining declaration to sign!"));
+                return $this->redirectToRoute('protocol_conflict_of_interest', array('protocol_id' => $protocol->getId()), 301);
+            case null:
+                $session->getFlashBag()->add('error', $translator->trans("Please sign the declarations first!"));
+                return $this->redirectToRoute('protocol_conflict_of_interest', array('protocol_id' => $protocol->getId()), 301);
+        }
+
+
         // checking if was a post request
         if($this->getRequest()->isMethod('POST')) {
 
