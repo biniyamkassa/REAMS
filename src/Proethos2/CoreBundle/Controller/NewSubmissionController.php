@@ -1201,7 +1201,8 @@ class NewSubmissionController extends Controller
         $upload_types = $upload_type_repository->findByStatus(true);
         $output['upload_types'] = $upload_types;
 
-        $output['upload_file_size'] = Util::get_printable_file_size() ;
+        $output['upload_file_size'] = Util::get_printable_file_size();
+        $output['upload_file_size_bytes'] = Util::get_allowed_file_size();
 
         if (!$submission or $submission->getCanBeEdited() == false) {
             if(!$submission or ($submission->getProtocol()->getIsMigrated() and !in_array('administrator', $user->getRolesSlug()))) {
