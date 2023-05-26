@@ -13,4 +13,5 @@
 // You should have received a copy of the ProEthos License along with the ProEthos
 // Software. If not, see
 // https://github.com/bireme/proethos2/blob/master/LICENSE.txt
- phpinfo();die; a 
+ phpinfo();die;
+ 

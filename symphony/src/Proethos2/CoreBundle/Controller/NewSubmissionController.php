@@ -1870,7 +1870,7 @@ class NewSubmissionController extends Controller
                         }
 
                         $message = \Swift_Message::newInstance()
-                        ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("A new monitoring action has been submitted."))
+                        ->setSubject("[REAMS] " . $mail_translator->trans("A new monitoring action has been submitted."))
                         ->setFrom($util->getConfiguration('committee.email'))
                         ->setTo($secretaries_emails)
                         ->setBody(
@@ -1903,7 +1903,7 @@ class NewSubmissionController extends Controller
                             $recipient = $protocol->getMainSubmission()->getOwner();
                             
                             $message = \Swift_Message::newInstance()
-                            ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("Your protocol was sent to review."))
+                            ->setSubject("[REAMS] " . $mail_translator->trans("Your protocol was sent to review."))
                             ->setFrom($util->getConfiguration('committee.email'))
                             ->setTo($recipient->getEmail())
                             ->setBody(
@@ -1933,7 +1933,7 @@ class NewSubmissionController extends Controller
                         }
 
                         $message = \Swift_Message::newInstance()
-                        ->setSubject("[CMHS-REAMS] " . $mail_translator->trans("A new protocol has been submitted."))
+                        ->setSubject("[REAMS] " . $mail_translator->trans("A new protocol has been submitted."))
                         ->setFrom($util->getConfiguration('committee.email'))
                         ->setTo($secretaries_emails)
                         ->setBody(

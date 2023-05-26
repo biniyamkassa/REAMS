@@ -1,5 +1,5 @@
 REPLACE INTO `configuration` (`id`, `created`, `updated`, `key`, `value`, `description`) VALUES (2,'1970-01-01 00:00:00','1970-01-01 00:00:00','committee.name','Research Ethics Application Management System','Committee Name');
-REPLACE INTO `configuration` (`id`, `created`, `updated`, `key`, `value`, `description`) VALUES (3,'1970-01-01 00:00:00','1970-01-01 00:00:00','committee.prefix','CMHS-REMS','Committee Prefix Code');
+REPLACE INTO `configuration` (`id`, `created`, `updated`, `key`, `value`, `description`) VALUES (3,'1970-01-01 00:00:00','1970-01-01 00:00:00','committee.prefix','REMS','Committee Prefix Code');
 REPLACE INTO `configuration` (`id`, `created`, `updated`, `key`, `value`, `description`) VALUES (4,'1970-01-01 00:00:00','1970-01-01 00:00:00','committee.email','cmhsrec@uog.edu.et','Committee Contact');
 REPLACE INTO `configuration` (`id`, `created`, `updated`, `key`, `value`, `description`) VALUES (5,'1970-01-01 00:00:00','1970-01-01 00:00:00','committee.address','Chechella Street, College of Medicine and Health Sciences, University of Gondar, Gondar, Ethiopia','Committee Address');
 REPLACE INTO `configuration` (`id`, `created`, `updated`, `key`, `value`, `description`) VALUES (6,'1970-01-01 00:00:00','1970-01-01 00:00:00','committee.phones','Phone: +251 91 109 6660','Committee Phone Numbers');
