@@ -229,7 +229,7 @@ class SecurityController extends Controller
                         }
 
                         $message = \Swift_Message::newInstance()
-                        ->setSubject("[REAMS] " . $translator->trans("New user on Proethos2 platform"))
+                        ->setSubject("[REAMS] " . $translator->trans("New user on REAMS platform"))
                         ->setFrom($util->getConfiguration('committee.email'))
                         ->setTo($secretaries_emails)
                         ->setBody(
@@ -768,12 +768,12 @@ class SecurityController extends Controller
 
             // send email to the user
             $message = \Swift_Message::newInstance()
-            ->setSubject("[REAMS] " . $translator->trans("Welcome to the Proethos2 platform!"))
+            ->setSubject("[REAMS] " . $translator->trans("Welcome to the REAMS platform!"))
             ->setFrom($util->getConfiguration('committee.email'))
             ->setTo($post_data['email'])
             ->setBody(
                 $body
-                ,   
+                ,
                 'text/html'
             );
             $send = $this->get('mailer')->send($message);
@@ -796,7 +796,7 @@ class SecurityController extends Controller
             }
 
             $message = \Swift_Message::newInstance()
-            ->setSubject("[REAMS] " . $translator->trans("New user on Proethos2 platform"))
+            ->setSubject("[REAMS] " . $translator->trans("New user on REAMS platform"))
             ->setFrom($util->getConfiguration('committee.email'))
             ->setTo($secretaries_emails)
             ->setBody(

@@ -1432,7 +1432,7 @@ class CRUDController extends Controller
                 $body = $util->linkify($body);
 
                 $message = \Swift_Message::newInstance()
-                ->setSubject("[REAMS] " . $translator->trans("Confirmation of valid access to the Proethos2 platform"))
+                ->setSubject("[REAMS] " . $translator->trans("Confirmation of valid access to the REAMS platform"))
                 ->setFrom($util->getConfiguration('committee.email'))
                 ->setTo($user->getEmail())
                 ->setBody(
@@ -1691,7 +1691,7 @@ class CRUDController extends Controller
             $body .= "<br /><br />";
 
             $message = \Swift_Message::newInstance()
-            ->setSubject("[REAMS] " . $translator->trans("Message from plataform."))
+            ->setSubject("[REAMS] " . $translator->trans("Message from REAMS platform."))
             ->setFrom($output['committee_email'])
             ->setTo($output['committee_email'])
             ->setBody(
