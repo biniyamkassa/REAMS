@@ -39,7 +39,7 @@
                 if (document.getElementById('checkbox-member-of-committee').checked && document.getElementById('checkbox-member-ad-hoc').checked) {
                     // cancel submit
                     e.preventDefault();
-                    alert('{% trans %}Notice: Cannot assign both standard and ad-hoc to the same user. Please select either of the two{% endtrans %}');
+                    alert('{% trans %}Notice: Cannot assign both standard and external reviewer to the same user. Please select either of the two{% endtrans %}');
                     highlight_input_field('#textarea-new-activity-exclusion-criteria', 'sn');
                     return false;
                 }
