@@ -49,6 +49,14 @@ class SecurityController extends Controller
         }
     }
 
+     /**
+         * @Route("/public/terms-and-conditions", name="terms-and-conditions")
+         * @Template()
+         */
+    public function termsAndConditions(){
+    }
+
+
     /**
      * @Route("/login", name="login_route")
      * @Template()
