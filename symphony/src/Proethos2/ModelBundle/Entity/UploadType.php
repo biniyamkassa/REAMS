@@ -72,6 +72,20 @@ class UploadType extends Base
      */
     private $locale;
 
+     /**
+     * @ORM\Column(type="boolean")
+     */
+    private $isRequired = false;
+    public function setIsRequired($isRequired)
+    {
+        $this->isRequired = $isRequired;
+        return $this;
+    }
+    public function getIsRequired()
+    {
+        return $this->isRequired;
+    }
+
     public function setTranslatableLocale($locale)
     {
         $this->locale = $locale;

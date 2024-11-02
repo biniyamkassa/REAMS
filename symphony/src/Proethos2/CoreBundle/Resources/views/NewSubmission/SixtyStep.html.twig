@@ -52,10 +52,24 @@
                                             </td>
                                         </tr>
                                     {% endfor %}
+
+ {% for uploadType in required_upload_types %}
+                                        <tr class="required_upload_type">
+                                            <td style="color:red" title="required file">{{ uploadType.name }} * </td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>
+                                                <a href='#' class='btn btn-default btn-xs button-upload-attachment' data-id='{{ uploadType.id }}' data-toggle="modal" data-target="#modal-new-file">
+                                                    <i class='glyphicon glyphicon-upload'></i> Upload
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+
                                 </tbody>
                             </table>
 
-                            <a href='#' class='btn btn-default' data-toggle="modal" data-target="#modal-new-file">{% trans %}New Attachment{% endtrans %}</a>
+                            <a href='#' class='btn btn-default' id="new-attachement-button" data-toggle="modal" >{% trans %}New Attachment{% endtrans %}</a>
                         </div>
                     </div>
                 </div>
@@ -152,6 +166,20 @@
 {% block script %}
     <script>
         $(function(){
+
+
+             $('#form-sixth').on('submit', function(e) {
+               
+                // check if the table contians rows and if not give notice that please attach prior-ethical-approval
+                if ( {{required_upload_types|length}}>0 ) {
+                    // cancel submit
+                    e.preventDefault();
+                    alert('{% trans %}Notice: Please attach required attachements first.{% endtrans %}');
+                    highlight_input_field('.required_upload_type');
+                    return false;
+                }
+            });
+
             $("#table-attachment").on("click", ".button-delete-attachment", function(e){
                 var id = $(this).data('id');
                 $("#hidden-delete-attachment").val(id);
@@ -162,6 +190,21 @@
             });
 
             $("#select-new-attachment-type").selectpicker();
+
+              $("#table-attachment").on("click", ".button-upload-attachment", function(e){
+                var id = $(this).data('id');
+                $("#select-new-attachment-type").val(id);
+                $("#select-new-attachment-type").prop('disabled', true);
+                $("#select-new-attachment-type").selectpicker('refresh');
+                console.log("test test", id);
+            });
+            $("#new-attachement-button").on("click", function(e){
+                // show modal
+                $('#modal-new-file').modal('show');
+                $("#select-new-attachment-type").val("");
+                $("#select-new-attachment-type").prop('disabled', false);
+                $("#select-new-attachment-type").selectpicker('refresh');
+            })
 
             $("#select-new-attachment-type").on('loaded.bs.select', function() {
                 var options = $("#select-new-attachment-type option");
@@ -177,6 +220,9 @@
 
 
             $("#form-new-attachment").on('submit', function(e) {
+
+                 $("#select-new-attachment-type").prop('disabled', false);
+
                 e.preventDefault();
                 var fileInput = $('#input-new-attachment-file');
                 if(fileInput.get(0).files.length && fileInput.get(0).files[0].size > {{ upload_file_size_bytes }} ){

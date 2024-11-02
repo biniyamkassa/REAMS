@@ -920,6 +920,7 @@ CREATE TABLE `upload_type` (
   `name` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   `slug` varchar(255) COLLATE utf8mb3_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL,
+  `is_required` TINYINT(1) DEFAULT 0;
   PRIMARY KEY (`id`),
   UNIQUE KEY `UNIQ_85AD050989D9B62` (`slug`)
 ) ENGINE=InnoDB AUTO_INCREMENT=43 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_unicode_ci;

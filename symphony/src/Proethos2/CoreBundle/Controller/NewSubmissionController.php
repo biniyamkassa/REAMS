@@ -42,7 +42,7 @@ use Proethos2\ModelBundle\Entity\ProtocolHistory;
 use Proethos2\ModelBundle\Entity\SubmissionClinicalTrial;
 use Proethos2\ModelBundle\Entity\SubmissionClinicalStudy;
 use Proethos2\ModelBundle\Entity\SubmissionTeam;
-
+use Proethos2\ModelBundle\Entity\UploadType;
 
 class NewSubmissionController extends Controller
 {
@@ -1093,12 +1093,44 @@ class NewSubmissionController extends Controller
         $submission_repository = $em->getRepository('Proethos2ModelBundle:Submission');
         $user_repository = $em->getRepository('Proethos2ModelBundle:User');
         $submission_country_repository = $em->getRepository('Proethos2ModelBundle:SubmissionCountry');
+  
+        $upload_type_repository = $em->getRepository('Proethos2ModelBundle:UploadType');
+        $submission_upload_repository = $em->getRepository('Proethos2ModelBundle:SubmissionUpload');
+        $extensions_repository = $em->getRepository('Proethos2ModelBundle:UploadTypeExtension');
+        $upload_types = $upload_type_repository->findByStatus(true);
+        $output['upload_types'] = $upload_types;
+        $output['upload_file_size'] = Util::get_printable_file_size();
+        $output['upload_file_size_bytes'] = Util::get_allowed_file_size();
+        //check if prior ethical approval upload type exists
+        $prior_ethical_approval_upload_type = $upload_type_repository->findOneBySlug('prior-ethical-approval');
+       
+        if($prior_ethical_approval_upload_type==null){
+            //check if prior ethical approval upload exists
+            //create prior ethical approval upload type
+            $prior_ethical_approval_upload_type = new UploadType();
+            $prior_ethical_approval_upload_type->setSlug('prior-ethical-approval');
+            $prior_ethical_approval_upload_type->setName('Prior Ethical Approval');
+            $prior_ethical_approval_upload_type->setStatus(true);
+            foreach([".pdf",".docx",".doc"] as $extension) {
+                $extension = $extensions_repository->findOneByExtension($extension);
+                $prior_ethical_approval_upload_type->addExtension($extension);
+            }
+            $em->persist($prior_ethical_approval_upload_type);
+            $em->flush();
+
+            $output['prior_ethical_approval_upload_type'] = $prior_ethical_approval_upload_type;
+        }else{
+            $output['prior_ethical_approval_upload_type'] = $prior_ethical_approval_upload_type;
+        }
+
 
         $user = $this->get('security.token_storage')->getToken()->getUser();
 
         // getting the current submission
         $submission = $submission_repository->find($submission_id);
         $output['submission'] = $submission;
+
+        
 
         if (!$submission or $submission->getCanBeEdited() == false) {
             if(!$submission or ($submission->getProtocol()->getIsMigrated() and !in_array('administrator', $user->getRolesSlug()))) {
@@ -1138,13 +1170,111 @@ class NewSubmissionController extends Controller
 
             // getting post data
             $post_data = $request->request->all();
-
             // sanitize WYSIWYG fields
+
+
             array_walk($post_data, function(&$value){
                 if ( '<p><br></p>' == $value )
                     $value = '';
                 return $value;
             });
+
+
+            $file = $request->files->get('new-attachment-file');
+            if(!empty($file)) {
+
+                $submission->setPriorEthicalApproval(true);
+
+                if(!isset($post_data['new-attachment-type']) or empty($post_data['new-attachment-type'])) {
+                    $session->getFlashBag()->add('error', $translator->trans("Field 'new-attachment-type' is required."));
+                    return $output;
+                }
+
+                $upload_type = $upload_type_repository->find($post_data['new-attachment-type']);
+                if (!$upload_type) {
+                    throw $this->createNotFoundException($translator->trans('No upload type found'));
+                    return $output;
+                }
+
+                $file_ext = '.'.$file->getClientOriginalExtension();
+                $ext_formats = $upload_type->getExtensionsFormat();
+                if ( !in_array($file_ext, $ext_formats) ) {
+                    $session->getFlashBag()->add('error', $translator->trans("File extension not allowed"));
+                    return $output;
+                }
+
+                //check file size
+                $allowed_file_size = Util::get_allowed_file_size();
+                if ($allowed_file_size < $file->getClientSize()) {
+                    $session->getFlashBag()->add('error', $translator->trans("The file size exudes the allowed file size"));
+                    return $output;
+                }
+
+
+                // Scan file for viruses
+                $cloudmersive_apikey = ( $_ENV['CLOUDMERSIVE_APIKEY'] ) ? $_ENV['CLOUDMERSIVE_APIKEY'] : '';
+                $cloudmersive_max_filesize = ( $_ENV['CLOUDMERSIVE_MAX_FILESIZE'] ) ? intval($_ENV['CLOUDMERSIVE_MAX_FILESIZE']) : 3;
+                if ( !empty($cloudmersive_apikey) ) {
+                    if ( $file->getSize() > $cloudmersive_max_filesize*1024*1024 ) {
+                        $session->getFlashBag()->add('error', $translator->trans("Maximum file size allowed: %maxfilesize%MB", array("%maxfilesize%" => $cloudmersive_max_filesize)));
+                        return $output;
+                    }
+
+                    // Configure API key authorization: Apikey
+                    $config = SwaggerConfiguration::getDefaultConfiguration()->setApiKey('Apikey', $cloudmersive_apikey);
+                    $apiInstance = new SwaggerScanApi(
+                        new GuzzleClient(),
+                        $config
+                    );
+
+                    $input_file = $file->getRealPath(); // \SplFileObject | Input file to perform the operation on.
+                    $result = $apiInstance->scanFile($input_file);
+                    try {
+                        $result = $apiInstance->scanFile($input_file);
+                    } catch (Exception $e) {
+                        throw $this->createNotFoundException("Exception when calling ScanApi->scanFile: " . $e->getMessage());
+                    }
+
+                    if ( !$result->getCleanResult() ) {
+                        throw $this->createNotFoundException($translator->trans('File contains viruses'));
+                    }
+                }
+
+                $submission_upload = new SubmissionUpload();
+                $submission_upload->setSubmission($submission);
+                $submission_upload->setUploadType($upload_type);
+                $submission_upload->setUser($user);
+                $submission_upload->setFile($file);
+                $submission_upload->setSubmissionNumber($submission->getNumber());
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($submission_upload);
+                $em->flush();
+
+                $submission->addAttachment($submission_upload);
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($submission);
+                $em->flush();
+
+                $session->getFlashBag()->add('success', $translator->trans("File uploaded with success."));
+                return $this->redirectToRoute('submission_new_fifth_step', array('submission_id' => $submission->getId()), 301);
+
+            }
+
+            if(isset($post_data['delete-attachment-id']) and !empty($post_data['delete-attachment-id'])) {
+
+                $submission->setPriorEthicalApproval(true);
+
+                $submission_upload = $submission_upload_repository->find($post_data['delete-attachment-id']);
+                if($submission_upload) {
+
+                    $em->remove($submission_upload);
+                    $em->flush();
+                    $session->getFlashBag()->add('success', $translator->trans("File removed with success."));
+                    return $this->redirectToRoute('submission_new_fifth_step', array('submission_id' => $submission->getId()), 301);
+                }
+            }
+
 
             // checking required files
             $required_fields = array('bibliography', 'sscientific-contact');
@@ -1199,7 +1329,22 @@ class NewSubmissionController extends Controller
         $output['submission'] = $submission;
 
         $upload_types = $upload_type_repository->findByStatus(true);
+
+
+        $required_upload_types = $upload_type_repository->findByIsRequired(true);
+        // remove the upload types from requried_upload_types array that are already uploaded on the submission
+        $attachments= $submission->getAttachments();
+        $required_upload_types = array_filter($required_upload_types, function ($upload_type) use ($attachments) {
+            foreach($attachments as $attachment) {
+                if ($attachment->getUploadType()->getId() == $upload_type->getId()){
+                    return false;
+                }
+            }
+            return true;        
+        });
+
         $output['upload_types'] = $upload_types;
+        $output['required_upload_types'] = $required_upload_types;
 
         $output['upload_file_size'] = Util::get_printable_file_size();
         $output['upload_file_size_bytes'] = Util::get_allowed_file_size();
@@ -1231,6 +1376,8 @@ class NewSubmissionController extends Controller
             throw $this->createNotFoundException($translator->trans('No submission found'));
         }
 
+     
+
         // checking if was a post request
         if($this->getRequest()->isMethod('POST')) {
 
@@ -1246,6 +1393,7 @@ class NewSubmissionController extends Controller
             $file = $request->files->get('new-attachment-file');
             if(!empty($file)) {
 
+                $submission->setPriorEthicalApproval(true);
                 if(!isset($post_data['new-attachment-type']) or empty($post_data['new-attachment-type'])) {
                     $session->getFlashBag()->add('error', $translator->trans("Field 'new-attachment-type' is required."));
                     return $output;
@@ -1323,6 +1471,8 @@ class NewSubmissionController extends Controller
             }
 
             if(isset($post_data['delete-attachment-id']) and !empty($post_data['delete-attachment-id'])) {
+
+                $submission->setPriorEthicalApproval(true);
 
                 $submission_upload = $submission_upload_repository->find($post_data['delete-attachment-id']);
                 if($submission_upload) {

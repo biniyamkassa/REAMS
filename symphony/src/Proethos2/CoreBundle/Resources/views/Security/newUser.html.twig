@@ -6,6 +6,35 @@
     
     <script src='https://www.google.com/recaptcha/api.js?hl={{ hl }}'></script>
 
+    <script>
+        // Password complexity validation
+        function validatePassword() {
+            const password = document.getElementById("input-password").value;
+            const confirmPassword = document.getElementById("input-confirm-password").value;
+            const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+            // Check if password matches complexity criteria
+            if (!passwordRegex.test(password)) {
+                alert("Password must be at least 8 characters long, include uppercase and lowercase letters, a number, and a special character.");
+                return false;
+            }
+            // Check if passwords match
+            if (password !== confirmPassword) {
+                alert("Passwords do not match.");
+                return false;
+            }
+            return true;
+        }
+
+         // Attach the validatePassword function to the form submission
+        document.addEventListener("DOMContentLoaded", function () {
+            document.querySelector(".form-change-password").addEventListener("submit", function (event) {
+                if (!validatePassword()) {
+                    event.preventDefault();
+                }
+            });
+        });
+    </script>
+
 {% endblock %}
 
 {% block body %}

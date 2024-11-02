@@ -116,6 +116,17 @@
 
     </div>
 
+    //trigger new user modeal whenever user-new get parameter is set
+    <script type="text/javascript">
+        $(document).ready(function(){
+            const urlParams = new URLSearchParams(window.location.search);
+            
+            if (urlParams.get('new-user')!=null) {
+                $('#modal-new-user').modal('show');
+            }
+        }) 
+    </script>
+
     <!-- Modal New User -->
     <div class="modal fade" id="modal-new-user" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         

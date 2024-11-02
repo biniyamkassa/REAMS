@@ -2452,6 +2452,10 @@ class CRUDController extends Controller
                 }
             }
 
+            if(isset($post_data['requried']) and $post_data['requried'] == "true") {
+                $item->setIsRequired(true);
+            }
+
             $em->persist($item);
             $em->flush();
 
@@ -2542,6 +2546,13 @@ class CRUDController extends Controller
                 $item->setStatus(true);
             }
 
+            if(isset($post_data['requried']) and $post_data['requried'] == "true") {
+                $item->setIsRequired(true);
+            }else{
+                $item->setIsRequired(false);
+            }
+
+            
             $em->persist($item);
             $em->flush();
 

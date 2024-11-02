@@ -941,9 +941,11 @@
         <source>Main?</source>
         <target>Principal?</target>
       </trans-unit>
-      <trans-unit id="891de712f69f8b2835bf0fe3743a1cfe87a48905" resname="Make this investigator owner of this submission">
-        <source>Make this investigator owner of this submission</source>
-        <target>Make this investigator owner of this submission</target>
+      
+       <trans-unit id="891de712f69f8b2835bf0fe3743a1cfe87a48905" resname="Make this investigator PI">
+        <source>Make this investigator PI</source>
+        <target>Make this investigator PI</target>
+
       </trans-unit>
       <trans-unit id="2b090feeffd667ab00815a39bd2500b442fecfce" resname="Maximum Age">
         <source>Maximum Age</source>
